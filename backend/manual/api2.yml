@@ -1,0 +1,46 @@
+openapi: 3.0.3
+info:
+  title: User API
+  version: 1.0.0
+  description: ユーザ管理API仕様書
+
+#servers:
+#  - url: https://localhost:5173
+#    description: 開発環境
+
+tags:
+  - name: users
+    description: ユーザ管理API
+  - name: auth
+    description: 認証関連API
+
+paths:
+  /users:
+    get:
+      tags:
+        - users
+      summary: Get users
+      parameters:
+        - name: limit
+          in: query
+          description: 取得件数
+          required: false
+          schema:
+            type: integer
+            example: 10
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+        default:
+          description: Error

@@ -1,0 +1,22 @@
+{
+  "name": "Frontend DevContainer",
+  "build": {
+    //"context": "..",
+    "dockerfile": "../../docker/frontend/Dockerfile"
+  },
+  "workspaceFolder": "/workspaces/shimada-trading/frontend",
+  "workspaceMount": "source=${localWorkspaceFolder}/..,target=/workspaces/shimada-trading,type=bind",
+  //"workspaceFolder": "/app",
+  //"workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind",
+  "forwardPorts": [5173],
+  "postCreateCommand": "npm install",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "git.enabled": true,
+        "git.autoRepositoryDetection": "subFolders"
+      },
+      "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode", "esbenp.prettier-vscode"]
+    }
+  }
+}

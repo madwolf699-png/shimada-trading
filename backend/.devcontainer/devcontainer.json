@@ -1,0 +1,25 @@
+{
+  "name": "PHP Backend DevContainer",
+  "build": {
+    //"context": "..",
+    "dockerfile": "../../docker/backend/Dockerfile"
+  },
+  "workspaceFolder": "/workspace/shimada-trading/backend",
+  "workspaceMount": "source=${localWorkspaceFolder}/..,target=/workspace/shimada-trading,type=bind",
+  //"workspaceFolder": "/var/www/html",
+  //"workspaceMount": "source=${localWorkspaceFolder},target=/var/www/html,type=bind",
+  "postCreateCommand": "composer install --no-interaction --prefer-dist --optimize-autoloader",
+  "forwardPorts": [80],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "git.enabled": true,
+        "git.autoRepositoryDetection": "subFolders"
+      },
+      "extensions": [
+        "bmewburn.vscode-intelephense-client",
+        "xdebug.php-debug"
+      ]
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    // Dev Containers が前提であることを示唆
+    "remote.containers.defaultExtensions": [],
+
+    // Git 周り（backend devcontainer と整合）
+    "git.enabled": true,
+    "git.autoRepositoryDetection": "subFolders"
+  }
+}

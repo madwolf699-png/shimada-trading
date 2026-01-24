@@ -1,0 +1,14 @@
+kubelet:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    https: true
+    insecureSkipVerify: true
+prometheus:
+  prometheusSpec:
+    externalLabels:
+      cluster: docker-desktop
+grafana:
+  service:
+    type: NodePort
+    nodePort: 30000

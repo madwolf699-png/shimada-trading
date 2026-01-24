@@ -1,0 +1,75 @@
+openapi: 3.0.3
+info:
+  title: PHPUnitによる単体試験
+  version: 1.0.0
+  description: |
+    本ドキュメントはbacktendのローカル開発環境で、ソースファイル個々のVitestによる単体試験について示しています。
+
+    ## 1. PHPUnitによる単体試験コードの作成
+    - **1.1 ChatGPTによる単体試験コードの作成**
+      - 以下のような形式でChatGPTに指定する。
+        ```bash
+        以下のファイル内容のphpunit単体試験コードを自動作成して下さい。
+        ・正常系
+        ・異常系
+        ＜ファイル内容を貼り付け＞
+        ```
+      - 結果を以下のフォルダへおく。
+        ```bash
+        ./tests
+        ```
+
+    - **1.2 GitHub Copilotによる単体試験コードの作成**
+      - 要検討。
+      - 結果を以下のフォルダへおく。
+        ```bash
+        ./tests
+        ```
+
+    ## 2. PHPUnitによる単体試験実施
+    - Visual Studio Codeでターミナルを開き、以下を実行。
+      - 特定のファイルの単体試験を実施する場合
+        ```bash
+        vendor/bin/phpunit ./tests/<ファイル名> --testdox --coverage-html coverage
+        ```
+      - クラス名で指定して単体試験を実施する場合
+        ```bash
+        vendor/bin/phpunit --filter <クラス名> --testdox --coverage-html coverage
+        ```
+      - 特定のディレクトリだけ実施する場合
+        ```bash
+        vendor/bin/phpunit ./tests/<ディレクトリ名> --testdox --coverage-html coverage
+        ```
+      - 全ての単体試験を実施する場合
+        ```bash
+        vendor/bin/phpunit --testdox --coverage-html coverage
+        ```
+
+    ## 3. 実施された単体試験結果のcoverage確認
+    - ブラウザにて以下を確認。
+      ```bash
+      [リポジトリ名]/backend/coverage/index.html
+      ```
+
+    ## 4. PHPUnitによる単体試験結果出力
+    - Visual Studio Codeでターミナルを開き、以下を実行。
+      - 特定のファイルの単体試験を実施する場合
+        ```bash
+        vendor/bin/phpunit ./tests/<ファイル名> --log-junit tests/result/junit.xml
+        ```
+      - 全ての単体試験を実施する場合
+        ```bash
+        vendor/bin/phpunit ./tests --log-junit tests/result/junit.xml
+        ```
+
+    ## A. 参考URL
+    - PHPUnit 公式サイト（トップページ）
+      ```bash
+      https://phpunit.de/
+      ```
+    - PHPUnit 公式マニュアル（ドキュメント）
+      ```bash
+      https://docs.phpunit.de/en/12.5/?utm_source=chatgpt.com
+      ```
+
+paths: {}

@@ -1,0 +1,38 @@
+openapi: 3.0.3
+info:
+  title: 開発環境 セットアップマニュアル
+  version: 1.0.0
+  description: |
+    本ドキュメントはbackendのローカル開発環境の構築手順を示しています。
+
+    ## 0.事前作業
+    - [リポジトリ名]フォルダにある「README.md」の内容に記載されている作業が完了している事を確認して下さい。
+
+    ## 1. Visual Studio Codeでの開発
+    - **1.1 Visual Studio Codeを起動する。**
+      ```bash
+      cd [リポジトリ名]/backend
+      code backend.code-workspace
+      ```
+      - DevContainetsへの接続が行われます。
+
+    - **1.2 拡張機能で以下のものがインストールされている事**
+      - Dev Containers
+      - OpenAPI (Swagger) Editor
+      - PHP Intelephense
+      - php cs fixer
+      - phpcs
+      - PHPStan
+
+    - **1.3 開発作業の実施**
+      - ソース修正の反映は、リロードにて。
+
+    - **1.4 その他マニュアル**
+      - coding-rule.yml
+        - コーディング規約チェックに関するマニュアル
+      - phpdoc.yml
+        - ドキュメント作成に関するマニュアル
+      - unit-test.yml
+        - 単体試験に関するマニュアル
+
+paths: {}

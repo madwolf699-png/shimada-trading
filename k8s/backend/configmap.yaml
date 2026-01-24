@@ -1,0 +1,10 @@
+# k8s/backend/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: test-project
+data:
+  APP_ENV: production
+  DB_HOST: db
+

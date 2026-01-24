@@ -1,0 +1,29 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.php": "explicit"
+  },
+
+  // phpcs：警告のみ
+  "phpcs.enable": true,
+  "phpcs.executablePath": "vendor/bin/phpcs",
+  "phpcs.standard": "ruleset.xml",
+
+  // php-cs-fixer：保存時のみ
+  "php-cs-fixer.executablePath": "vendor/bin/php-cs-fixer",
+  "php-cs-fixer.config": ".php-cs-fixer.php",
+  "php-cs-fixer.onSave": true,
+  "php-cs-fixer.allowRisky": false,
+
+  "phpstan.enabled": true,
+  "phpstan.executablePath": "vendor/bin/phpstan",
+  // 保存時解析を止めたい場合
+  "phpstan.run": "onSave",
+
+  // フォーマッタ競合防止
+  "[php]": {
+    "editor.defaultFormatter": "junstyle.php-cs-fixer",
+    "editor.formatOnSave": true
+  },
+  //"dev.containers.defaultExtensions": [],
+  //"remote.autoForwardPorts": true
+}

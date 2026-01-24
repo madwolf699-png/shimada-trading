@@ -1,0 +1,63 @@
+openapi: 3.0.3
+info:
+  title: Vitestによる単体試験
+  version: 1.0.0
+  description: |
+    本ドキュメントはfrontendのローカル開発環境で、ソースファイル個々のVitestによる単体試験について示しています。
+
+    ## 1. Vitestによる単体試験コードの作成
+    - **1.1 ChatGPTによる単体試験コードの作成**
+      - 以下のような形式でChatGPTに指定する。
+        ```bash
+        以下のファイル内容のphpunit単体試験コードを自動作成して下さい。
+        ・正常系
+        ・異常系
+        ＜ファイル内容を貼り付け＞
+        ```
+      - 結果を以下のフォルダへおく。
+        ```bash
+        ./src/tests
+        ```
+
+    - **1.2 GitHub Copilotによる単体試験コードの作成**
+      - 要検討。
+      - 結果を以下のフォルダへおく。
+        ```bash
+        ./src/tests
+        ```
+
+    ## 2. Vitestによる単体試験実施
+    - Visual Studio Codeでターミナルを開き、以下を実行。
+      - 全ファイルの単体試験を実施する場合
+        ```bash
+        npx vitest run --coverage
+        ```
+      - 特定のファイルの単体試験を実施する場合
+        ```bash
+        npx vitest run --coverage ./src/tests/<試験ファイル>
+        ```
+
+    ## 3. 実施された単体試験結果のcoverage確認
+    - ブラウザにて以下を確認。
+      ```bash
+      [リポジトリ名]/frontend/coverage/index.html
+      ```
+
+    ## 4. 実施された単体試験結果の出力
+    - 全ファイルの単体試験を実施する場合
+      ```bash
+      npx vitest run ./src/tests --reporter=junit --outputFile=./src/tests/reports/junit.xml
+      ```
+    - 特定のファイルの単体試験を実施する場合
+      ```bash
+      npx vitest run ./src/tests/<試験ファイル> --reporter=junit --outputFile=./src/tests/reports/junit.xml
+
+      ```
+
+    ## A. 参考URL
+    - Vitest 公式サイト（最新版ドキュメント）
+      ```bash
+      https://vitest.dev/?utm_source=chatgpt.com
+      ```
+
+paths: {}

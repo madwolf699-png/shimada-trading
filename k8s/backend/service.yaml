@@ -1,0 +1,15 @@
+# k8s/backend/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: test-project
+spec:
+  selector:
+    app: backend
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 80
+  type: ClusterIP
+

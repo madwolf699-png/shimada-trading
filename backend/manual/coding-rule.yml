@@ -1,0 +1,60 @@
+openapi: 3.0.3
+info:
+  title: 開発環境 コーディング規約
+  version: 1.0.0
+  description: |
+    本ドキュメントはbackendのローカル開発環境で、ソースファイルにコーディング規約について示しています。
+    ## 1. フォーマット
+    phpcs/php-cs-fixerにて実装。
+
+    | 項目 | ルール | 設定 |
+    |------|--------|----|
+    | 1行の最大文字数 | printWidth | 100 |
+    | インデント幅 | setIndent(' ') | 2 |
+    | タブではなくスペースを使う | indentation_type| true |
+    | シングルクォートを使う | single_quote | true |
+    | ES5 に準拠した箇所には末尾カンマを付ける | trailing_comma_in_multiline | true |
+    | オブジェクトリテラルの `{}` にスペースを入れる | braces / spaces_inside_parentheses | true |
+    | アロー関数の引数に常にカッコを付ける | arrowParens | "always" |
+    | 改行コードは LF に統一 | setLineEnding("\n") | \n |
+
+    ## 2. 構文解析
+    phstanにて実装。
+
+    | 項目 | ルール | 設定 |
+    |------|--------|----|
+
+    ## 3. ファイルのチェック
+    - 通常は、Visual Studio Code上のファイル修正時に自動チェックされ、自動修正されます。
+    - 手動でチェックもしくは修正する場合
+      - フォーマット（Prettier 相当）をチェックする場合
+        ```bash
+        vendor/bin/php-cs-fixer fix ./index.php
+        ```
+      - 規約チェック（ESLint 相当）をチェックする場合
+        ```bash
+        vendor/bin/phpcs ./index.php
+        ```
+      - 規約を自動修正する場合
+        ```bash
+        vendor/bin/phpcbf ./index.php
+        ```
+      - 静的解析（TypeScript ESLint 相当）をする場合
+        ```bash
+        vendor/bin/phpstan analyse ./index.php
+        ```
+
+    ## A. 参考URL
+    - PHP-CS-Fixer 公式プロジェクト（GitHub）
+      ```bash
+      https://github.com/PHP-CS-Fixer/PHP-CS-Fixer?utm_source=chatgpt.com
+      ```
+    - PHP_CodeSniffer 公式リポジトリ（GitHub）
+      ```bash
+      https://github.com/PHPCSStandards/PHP_CodeSniffer?utm_source=chatgpt.com
+      ```
+    - PHPStan 公式サイト（公式ドキュメント／ホームページ）
+      ```bash
+      https://phpstan.org/?utm_source=chatgpt.com
+
+paths: {}

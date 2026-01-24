@@ -1,0 +1,34 @@
+openapi: 3.0.3
+info:
+  title: phpdocによるドキュメント作成
+  version: 1.0.0
+  description: |
+    本ドキュメントはbackendのローカル開発環境で、ソースファイル個々のphpdocによるドキュメント作成について示しています。
+
+    ## 1. phpdocによるドキュメント作成
+    - Visual Studio Codeでターミナルを開き、以下を実行。
+      ```bash
+      vendor/bin/phpdoc -d <ファイル名> -t /workspace/test-project/backend/docs
+      ```
+
+    ## 2. 作成されたドキュメントの確認
+    - ブラウザにて以下を確認。
+      ```bash
+      [リポジトリ名]/backtend/docs/index.html
+      ```
+
+    ## A. 参考URL
+    - phpDocumentor 公式ドキュメント トップ
+      ```bash
+      https://docs.phpdoc.org/guide/?utm_source=chatgpt.com
+      ```
+    - PHPDoc リファレンス（タグや構文の一覧）
+      ```bash
+      https://docs.phpdoc.org/guide/references/phpdoc/index.html?utm_source=chatgpt.com
+      ```
+    - phpDocumentor 公式サイト
+      ```bash
+      https://phpdoc.org/?utm_source=chatgpt.com
+      ```
+
+paths: {}

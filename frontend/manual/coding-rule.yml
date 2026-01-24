@@ -1,0 +1,114 @@
+openapi: 3.0.3
+info:
+  title: 開発環境 コーディング規約
+  version: 1.0.0
+  description: |
+    本ドキュメントはfrontendのローカル開発環境で、ソースファイルにコーディング規約について示しています。
+    ## 1. フォーマット
+    Prettierにて実装。
+
+    | 項目 | ルール | 設定 |
+    |------|--------|----|
+    | 1行の最大文字数 | printWidth | 100 |
+    | インデント幅 | tabWidth | 2 |
+    | タブではなくスペースを使う | useTabs| false |
+    | セミコロンを常に付ける | semi | true |
+    | シングルクォートを使う | singleQuote | true |
+    | プロパティに必要なときだけクォート | quoteProps | "as-needed" |
+    | JSX ではダブルクォートを使用 | jsxSingleQuote | false |
+    | ES5 に準拠した箇所には末尾カンマを付ける | trailingComma | "es5" |
+    | オブジェクトリテラルの `{}` にスペースを入れる | bracketSpacing | true |
+    | JSX の `>` は改行して配置 | bracketSameLine | false |
+    | アロー関数の引数に常にカッコを付ける | arrowParens | "always" |
+    | 改行コードは LF に統一 | endOfLine | "lf" |
+
+    - **1.1 ファイルのチェック**
+      - 通常は、Visual Studio Code上のファイル修正時に自動チェックされ、自動修正されます。
+      - 手動でチェックもしくは修正する場合
+        - 全ファイルをチェックする場合
+          ```bash
+          npx prettier --check .
+          ```
+        - 全ファイルをチェックし、かつ修正する場合
+          ```bash
+          npx prettier --write .
+          ```
+        - 特定のファイルをチェックする場合
+          ```bash
+          npx prettier --check ./src/**/<ファイル名>
+          ```
+        - 特定のファイルをチェックし、かつ修正する場合
+          ```bash
+          npx prettier --write ./src/**/<ファイル名>
+          ```
+
+    ## 2. バグ・品質・ルール違反を検出
+    ESLintにて実装。
+
+    | 項目 | ルール | 設定 |
+    |------|--------|----|
+    | ESLintが用意している基本的な推奨ルール（構文ミス、未使用変数などの検出） | eslint:recommended | 有効 |
+    | ES6のimport/exportに関するエラー（未定義のimport、順序、循環参照など）を検出 | plugin:import/recommended | 無効 |
+    | Reactコンポーネントの構文やスタイルのルールを適用 | plugin:react/recommended | 有効 |
+    | PrettierのフォーマットとESLintのルールが競合しないように調整 | plugin:prettier/recommended | 有効 |
+    | 関数やクラスなどのJSDocコメントの有無・書式・構造をチェック | plugin:jsdoc/recommended | 無効 |
+
+    | 項目 | ルール | 設定 |
+    |------|--------|----|
+    | キャメルケース命名強制 | camelcase | ["error", { properties: "always" }] |
+    | `==`禁止、常に`===`を使う | eqeqeq | ["error", "always"] |
+    | インデント2スペース | indent | ["error", 2] |
+    | console.log などに警告 | "no-console" | "warn" |
+    | debugger 文を禁止 | "no-debugger" | "error" |
+    | 行末スペース禁止 | "no-trailing-spaces" | "error" |
+    | 未使用の変数に警告。ただし ^[A-Z_] で始まる変数、引数名が _ で始まるものは許容 | no-unused-vars | "warn" |
+    | `var`禁止、`let/const`を使用 | "no-var" | "error" |
+    | オブジェクトの括弧内スペースあり | "object-curly-spacing" | ["error", "always"] |
+    | セミコロン必須 | semi | ["error", "always"] |
+    | 不変の変数は `const` を強制 | "prefer-const" | "error" |
+
+    - **2.1 ファイルのチェック**
+      - 通常は、Visual Studio Code上のファイル修正時に自動チェックされ、自動修正されます。
+      - 手動でチェックもしくは修正する場合
+        - 全ファイルをチェックする場合
+          ```bash
+          npx eslint src
+          ```
+        - 全ファイルをチェックし、かつ修正する場合
+          ```bash
+          npx eslint src --fix
+          ```
+        - 特定のファイルをチェックする場合
+          ```bash
+          npx eslint ./src/**/<ファイル名>
+          ```
+        - 特定のファイルをチェックし、かつ修正する場合
+          ```bash
+          npx eslint ./src/**/<ファイル名> --fix
+          ```
+
+    ## A. 参考URL
+    - **A.1 Prettier**
+      - Prettier 公式サイト（Docs）
+        ```bash
+        https://prettier.io/
+        ```
+      - Getting Started（導入ガイド）
+        ```bash
+        https://prettier.io/docs/en/install.html
+        ```
+      - 設定オプション一覧
+        ```bash
+        https://prettier.io/docs/en/options.html
+      - Playground（コード整形を試せる）
+        ```bash
+        https://prettier.io/playground/
+        ```
+
+    - **A.2 ESLint**
+      - ESLint 公式サイト（トップページ）
+        ```bash
+        https://eslint.org/?utm_source=chatgpt.com
+        ```
+
+paths: {}

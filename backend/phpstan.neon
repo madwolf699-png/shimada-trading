@@ -1,0 +1,21 @@
+parameters:
+  phpVersion: 80400
+  level: 6
+  paths:
+    - src
+
+  excludePaths:
+    analyse:
+      - .devcontainer
+      - .phpdoc
+      - .vscode
+      - coverage
+      - docs
+      - manual
+      - tests
+      - vendor
+
+  # よくある事故を防ぐ
+  checkMissingIterableValueType: true
+  checkImplicitMixed: true
+  treatPhpDocTypesAsCertain: true

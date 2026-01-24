@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    bootstrap="vendor/autoload.php"
+    colors="true"
+    executionOrder="depends,defects"
+    cacheResult="false"
+>
+    <testsuites>
+        <testsuite name="Application Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">.</directory>
+        </include>
+        <exclude>
+            <directory>.devcontainer</directory>
+            <directory>.phpdoc</directory>
+            <directory>.vscode</directory>
+            <directory>coverage</directory>
+            <directory>docs</directory>
+            <directory>manual</directory>
+            <directory>tests</directory>
+            <directory>vendor</directory>
+            <file>.php-cs-fixer.php</file>
+        </exclude>
+    </coverage>
+</phpunit>

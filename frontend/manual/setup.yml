@@ -1,0 +1,64 @@
+openapi: 3.0.3
+info:
+  title: 開発環境 セットアップマニュアル
+  version: 1.0.0
+  description: |
+    本ドキュメントはfrontendのローカル開発環境の構築手順を示しています。
+
+    ## 0.事前作業
+    - [リポジトリ名]フォルダにある「README.md」の内容に記載されている作業が完了している事を確認して下さい。
+
+    ## 1. Visual Studio Codeでの開発
+    - **1.1 Visual Studio Codeを起動する。**
+      ```bash
+      cd [リポジトリ名]/frontend
+      code frontend.code-workspace
+      ```
+      - DevContainetsの接続が行われます。
+
+    - **1.2 拡張機能で以下のものがインストールされている事**
+      - Dev Containers
+      - OpenAPI (Swagger) Editor
+      - Prettier - Code formatter
+      - ESLint
+
+    - **1.3 開発作業の実施**
+      - ソース修正時は、即座に反映されるはず。
+
+    - **1.4 その他マニュアル**
+      - coding-rule.yml
+        - コーディング規約チェックに関するマニュアル
+      - jsdoc.yml
+        - ドキュメント作成に関するマニュアル
+      - unit-test.yml
+        - 単体試験に関するマニュアル
+
+    ## 2. 必要なライブラリ
+    - FullCalendar
+      - @fullcalendar/react
+        React専用のFullCalendarコンポーネント。
+      - @fullcalendar/daygrid
+        月間カレンダー表示用のプラグイン。
+      - @fullcalendar/timegrid
+        週間・日間カレンダー表示用のプラグイン。
+      - @fullcalendar/interaction
+        ユーザー操作（ドラッグ＆ドロップ、クリック）をサポートするプラグイン
+      - 吹き出し
+        Tippy.js
+      ```bash
+      npm install @fullcalendar/react @fullcalendar/daygrid @fullcalendar/timegrid @fullcalendar/interaction
+      npm install tippy.js
+      ```
+      - 参考URL
+        ```bash
+        https://ar-aca.tech/posts/react-fullcalendar/
+        ```
+
+    - YAML → TypeScript型を自動生成する
+      ```bash
+      npm install -D openapi-typescript
+      生成は、
+      npx openapi-typescript manual/api.yml -o src/api/types.tsx
+      ```
+
+paths: {}

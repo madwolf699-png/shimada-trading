@@ -1,0 +1,43 @@
+openapi: 3.0.3
+info:
+  title: Events API
+  version: 1.0.0
+
+paths:
+  /events:
+    post:
+      summary: イベント取得
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventsRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventsResponse'
+
+components:
+  schemas:
+    EventsRequest:
+      type: object
+      required:
+        - userId
+        - from
+      properties:
+        userId:
+          type: string
+        from:
+          type: string
+
+    EventsResponse:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            type: object
