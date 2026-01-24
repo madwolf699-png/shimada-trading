@@ -12,7 +12,7 @@ services:
     ports:
       - "8080:80"
     networks:
-      - shimada-trading-net
+      - app-net
 
   frontend:
     build: ./docker/frontend
@@ -28,8 +28,8 @@ services:
     depends_on:
       - backend
     networks:
-      - shimada-trading-net
+      - app-net
 
 networks:
-  shimada-trading-net:
+  app-net:
     driver: bridge
