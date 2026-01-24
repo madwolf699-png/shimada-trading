@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  shimada-trading-backend:
+  backend:
     build: ./docker/backend
 #    container_name: backend
     restart: unless-stopped
@@ -14,7 +14,7 @@ services:
     networks:
       - shimada-trading-net
 
-  shimada-trading-frontend:
+  frontend:
     build: ./docker/frontend
 #    container_name: frontend
     restart: unless-stopped
@@ -26,7 +26,7 @@ services:
     ports:
       - "5173:5173"
     depends_on:
-      - shimada-trading-backend
+      - backend
     networks:
       - shimada-trading-net
 
