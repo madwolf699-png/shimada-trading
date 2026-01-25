@@ -137,9 +137,21 @@ docker save [repository-name]-frontend:latest -o [repository-name]-frontend.tar
   ```
 - Kubernetes初期化（シングルノード）
   ```bash
+  sudo modprobe br_netfilter
+  echo br_netfilter | sudo tee /etc/modules-load.d/k8s.conf
+  ```
+  ~~~bash
+  cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+  net.bridge.bridge-nf-call-iptables = 1
+  net.bridge.bridge-nf-call-ip6tables = 1
+  net.ipv4.ip_forward = 1
+  EOF
+  ~~~
+  ```bash
+  sudo sysctl --system
+
   sudo kubeadm init \
   --pod-network-cidr=10.244.0.0/16
-
   成功すると最後に kubeconfig設定コマンド が表示されます。
 
   mkdir -p $HOME/.kube
