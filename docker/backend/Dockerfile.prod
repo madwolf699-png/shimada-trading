@@ -2,6 +2,10 @@
 # vendor stage
 # =========================
 FROM composer:2 AS vendor
+
+# タイムゾーンを日本時間に設定
+ENV TZ=Asia/Tokyo
+
 WORKDIR /app
 
 COPY composer.json composer.lock* ./
