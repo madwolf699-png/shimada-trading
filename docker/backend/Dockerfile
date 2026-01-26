@@ -40,6 +40,7 @@ RUN apt-get update -o Acquire::ForceIPv4=true && apt-get install -y --fix-missin
     php8.4-xml \
     php8.4-curl \
     php8.4-zip \
+    php8.4-mysql \
     libapache2-mod-php8.4 \
     php-pear \
     && apt-get clean \

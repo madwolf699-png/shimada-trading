@@ -11,6 +11,8 @@ services:
       - ./docs:/var/www/html/docs
     ports:
       - "8080:80"
+    depends_on:
+      - db
     networks:
       - app-net
 
@@ -29,6 +31,26 @@ services:
       - backend
     networks:
       - app-net
+
+  db:
+    build: ./docker/db
+    restart: unless-stopped
+    ports:
+      - "3366:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+#      - ./docker/db/initdb:/docker-entrypoint-initdb.d
+    environment:
+      TZ: Asia/Tokyo
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: app_password
+    networks:
+      - app-net
+
+volumes:
+  mysql-data:
 
 networks:
   app-net:

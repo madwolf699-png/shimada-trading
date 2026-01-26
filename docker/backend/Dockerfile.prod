@@ -19,6 +19,8 @@ RUN composer install \
 # =========================
 FROM php:8.4-apache
 
+ENV TZ=Asia/Tokyo
+
 # 必須ビルド依存を追加
 RUN apt-get update && apt-get install -y \
     libonig-dev \
