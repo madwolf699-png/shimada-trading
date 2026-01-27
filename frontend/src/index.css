@@ -68,6 +68,9 @@ button:focus-visible {
 }
 
 /* fullCalendar */
+.fc .fc-day-today {
+  /*background-color: #535bf2 !important;*/
+}
 /*
 .fc-event-title {
   background-color: #d0ebff;
