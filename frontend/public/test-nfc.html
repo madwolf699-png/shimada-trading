@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NFCスキャン</title>
+  </head>
+  <body>
+    <h1>NFCタグ読み取りテスト</h1>
+    <button id="scan">NFCスキャン</button>
+
+    <script>
+      document.getElementById('scan').onclick = async () => {
+        if (!('NDEFReader' in window)) {
+          alert('このブラウザはWeb NFC非対応です');
+          return;
+        }
+
+        const reader = new NDEFReader();
+        try {
+          await reader.scan();
+          console.log('NFCスキャン開始…');
+        } catch (err) {
+          console.error('スキャン開始エラー:', err);
+          return;
+        }
+
+        reader.onreading = (event) => {
+          for (const record of event.message.records) {
+            let text = '';
+
+            if (record.recordType === 'text') {
+              // Text
+              // DataView → ArrayBuffer → UTF-8 decode
+              const decoder = new TextDecoder('utf-8');
+              text = decoder.decode(record.data.buffer);
+              console.log('Text:', text);
+            } else if (record.recordType === 'url') {
+              // URL/URI
+              const url = new TextDecoder().decode(record.data);
+              text = url;
+              console.log('URL:', url);
+            } else if (record.recordType === 'mime') {
+              // Custom MIME
+              const mime = record.mediaType;
+              const text = new TextDecoder().decode(record.data);
+              if (mime === 'application/json') {
+                const json = JSON.parse(text);
+                console.log('JSON:', json);
+              } else if (mime === 'text/vcard"') {
+                const vcard = new TextDecoder().decode(record.data);
+                console.log(vcard);
+              }
+            } else if (record.recordType === 'external') {
+              // External Type
+              const domain = record.domainType;
+              const value = new TextDecoder().decode(record.data);
+              console.log(domain, value);
+            } else if (record.data instanceof ArrayBuffer) {
+              text = new TextDecoder().decode(record.data);
+            }
+
+            console.log('recordType:', record.recordType);
+            console.log('mediaType:', record.mediaType);
+            console.log('decoded:', text);
+            alert('読み取り結果: ' + text);
+          }
+        };
+      };
+    </script>
+  </body>
+</html>

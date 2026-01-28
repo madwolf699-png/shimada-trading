@@ -34,6 +34,10 @@ info:
         - 単体試験に関するマニュアル
 
     ## 2. 必要なライブラリ
+    - @mui/material
+      ```bash
+      npm install @mui/material @mui/icons-material @emotion/react @emotion/styled
+      ```
     - FullCalendar
       - @fullcalendar/react
         React専用のFullCalendarコンポーネント。

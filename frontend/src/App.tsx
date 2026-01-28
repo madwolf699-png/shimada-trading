@@ -2,8 +2,10 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import NotFound from './pages/NotFound.tsx';
 import Home from './pages/Home.tsx';
 import About from './pages/About.tsx';
-import Calendar from "./pages/Calendar.tsx";
-
+import Login from './pages/Login.tsx';
+import Schedule from './pages/Schedule.tsx';
+import Master from './pages/Master.tsx';
+import Layout from './pages/common/Layout.tsx';
 /**
  * アプリケーション全体のルーティングを定義する
  * ルートコンポーネント。
@@ -22,10 +24,18 @@ import Calendar from "./pages/Calendar.tsx";
 export default function App() {
   return (
     <Routes>
+      {/* ヘッダ・メニューなし */}
       <Route path="/" element={<Home />} />
       <Route path="/home" element={<Navigate to="/" replace />} />
       <Route path="/about" element={<About />} />
-      <Route path="/calendar" element={<Calendar />} />
+      <Route path="/login" element={<Login />} />
+
+      {/* ★ Master系だけ共通レイアウトを使用 */}
+      <Route element={<Layout />}>
+        <Route path="/master" element={<Master />} />
+        <Route path="/schedule" element={<Schedule />} />
+      </Route>
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

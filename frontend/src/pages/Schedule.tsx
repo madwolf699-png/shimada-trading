@@ -69,7 +69,7 @@ function renderEventContent(eventInfo: any) {
  * @component
  * @returns {JSX.Element} カレンダー画面
  */
-function Calendar() {
+function Schedule() {
   const [allEvents, setAllEvents] = useState<any[]>([]);
   const [kindSelected, setKindSelected] = useState('all');
   const tippyInstancesRef = useRef<Instance[]>([]);
@@ -192,9 +192,17 @@ function Calendar() {
 
   return (
     // 親要素を画面全体の高さ(100vh)にし、Flexboxで縦並びにする
-    <div style={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+      }}
+    >
       {/* ヘッダー部分は高さを固定または自動 */}
-      <h4 style={{ textAlign: 'center', margin: '10px 0' }}>
+      <h4 style={{ textAlign: 'center', padding: '10px 0' }}>
         <label>
           <input
             type="radio"
@@ -238,7 +246,7 @@ function Calendar() {
       </h4>
 
       {/* カレンダー部分を flex: 1 にして残りの空間を全て埋める */}
-      <div style={{ flex: 1, overflow: 'hidden', padding: '0 20px 20px 20px' }}>
+      <div style={{ flex: 1, overflow: 'hidden', minHeight: 0, padding: '0 20px 20px' }}>
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           locale={jaLocale}
@@ -253,6 +261,7 @@ function Calendar() {
           selectable={true}
           // 重要: カレンダーの高さを親要素(div)いっぱいにする
           height="100%"
+          expandRows
           dateClick={(info) => window.alert(`日付: ${info.dateStr}`)}
           //eventClick={(info) => window.alert(`イベント: ${info.event.title}`)}
           eventContent={renderEventContent}
@@ -308,4 +317,4 @@ function Calendar() {
     </div>
   );
 }
-export default Calendar;
+export default Schedule;
