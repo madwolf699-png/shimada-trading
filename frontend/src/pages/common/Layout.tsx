@@ -1,38 +1,50 @@
-import { useState } from 'react';
+import { useState, useRef, useLayoutEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Box, useTheme, useMediaQuery } from '@mui/material';
+import { Box } from '@mui/material';
 import Header from './Header';
 import SideMenu from './SideMenu';
-
-const HEADER_HEIGHT_PC = 100; // MUI AppBar default
-const HEADER_HEIGHT_MOBILE = 200; // MUI AppBar default
-
-/**
- *
- */
 
 /**
  *
  */
 export default function Layout() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const headerRef = useRef<HTMLDivElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(0);
+
+  // Header 高さをリアルタイム取得
+  useLayoutEffect(() => {
+    /**
+     *
+     */
+    const updateHeight = () => {
+      if (headerRef.current) {
+        setHeaderHeight(headerRef.current.offsetHeight);
+      }
+    };
+
+    updateHeight();
+
+    // resize / 折り返し / Tabs 表示切替に追従
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
 
   return (
     <Box sx={{ height: '100vh', overflow: 'hidden' }}>
-      <Header onMenuClick={() => setMenuOpen(true)} />
+      {/* ★ Header に ref を渡す */}
+      <Header ref={headerRef} onMenuClick={() => setMenuOpen(true)} />
 
       <SideMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
 
       {/* ★ 可変コンテンツ領域 */}
       <Box
+        component="main"
         sx={{
-          mt: !isMobile ? `${HEADER_HEIGHT_PC}px` : `${HEADER_HEIGHT_MOBILE}px`,
-          height: !isMobile
-            ? `calc(100vh - ${HEADER_HEIGHT_PC}px)`
-            : `calc(100vh - ${HEADER_HEIGHT_MOBILE}px)`,
-          overflow: 'auto', // ← スクロールはここだけ
+          mt: `${headerHeight}px`,
+          height: `calc(100vh - ${headerHeight}px)`,
+          overflow: 'auto',
         }}
       >
         <Outlet />

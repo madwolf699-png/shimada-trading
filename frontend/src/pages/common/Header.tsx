@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -22,16 +22,13 @@ type Props = {
   onMenuClick: () => void;
 };
 
-/**
- *
- */
-export default function Header({ onMenuClick }: Props) {
+const Header = forwardRef<HTMLDivElement, Props>(({ onMenuClick }, ref) => {
   const [tabValue, setTabValue] = useState(0);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <AppBar position="fixed" color="default">
+    <AppBar position="fixed" color="default" ref={ref}>
       {/* ===== 上段 ===== */}
       <Toolbar sx={{ gap: 2, flexWrap: 'wrap', alignItems: 'center' }}>
         <Box sx={{ flexShrink: 0 }}>
@@ -46,7 +43,7 @@ export default function Header({ onMenuClick }: Props) {
             display: 'flex',
             alignItems: 'center',
             gap: 1,
-            width: { xs: '100%', sm: 'auto' }, // スマホは1行占有
+            width: { xs: '100%', sm: 'auto' },
           }}
         >
           <Typography variant="body2">期間</Typography>
@@ -114,4 +111,6 @@ export default function Header({ onMenuClick }: Props) {
       )}
     </AppBar>
   );
-}
+});
+
+export default Header;
