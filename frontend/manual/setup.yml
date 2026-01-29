@@ -65,4 +65,10 @@ info:
       npx openapi-typescript manual/api.yml -o src/api/types.tsx
       ```
 
+    ## A. 参考
+    - 祝日
+      ```bash
+      https://holidays-jp.github.io/
+      ```
+
 paths: {}

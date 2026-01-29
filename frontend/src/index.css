@@ -126,6 +126,59 @@ button:focus-visible {
 }
 
 /* fullCalendar */
+.fc-daygrid-day-number {
+  color: #333;
+}
+.fc-col-header-cell-cushion {
+  color: #333;
+}
+
+/* 土曜日・日曜日の「文字色」を変える */
+/* 日付数字そのもの */
+.fc-day-sun .fc-daygrid-day-number {
+  color: red;
+}
+.fc-day-sat .fc-daygrid-day-number {
+  color: blue;
+}
+.fc-col-header-cell.fc-day-sun .fc-col-header-cell-cushion {
+  color: red;
+}
+.fc-col-header-cell.fc-day-sat .fc-col-header-cell-cushion {
+  color: blue;
+}
+
+/* 背景色を指定する */
+/* 日曜日 */
+.fc-daygrid-day.fc-day-sun {
+  background-color: #ffecec;
+}
+/* 土曜日 */
+.fc-daygrid-day.fc-day-sat {
+  background-color: #eef3ff;
+}
+/* 曜日ヘッダの背景色も変える */
+.fc-col-header-cell.fc-day-sun {
+  background-color: #ffd6d6;
+}
+.fc-col-header-cell.fc-day-sat {
+  background-color: #dbe4ff;
+}
+/* timeGrid（週表示・日表示）の背景色 */
+.fc-timegrid-col.fc-day-sun {
+  background-color: #ffecec;
+}
+
+.fc-timegrid-col.fc-day-sat {
+  background-color: #eef3ff;
+}
+
+/* 祝日用の背景イベント */
+.fc .holiday-bg {
+  background-color: #9dff00 !important;
+  /*background-color: #fff2cc !important;*/
+}
+
 .fc .fc-day-today {
   /*background-color: #535bf2 !important;*/
 }

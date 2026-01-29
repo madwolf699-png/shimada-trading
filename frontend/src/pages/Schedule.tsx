@@ -58,6 +58,15 @@ function renderEventContent(eventInfo: any) {
   );
 }
 
+const holidays = [
+  {
+    title: '祝日',
+    start: '2026-02-03',
+    display: 'background',
+    classNames: ['holiday-bg'],
+  },
+];
+
 /**
  * カレンダー画面コンポーネント
  *
@@ -166,6 +175,7 @@ function Schedule() {
   }, []);
 
   useEffect(() => {
+    calendarRef.current?.getApi().refetchEvents();
     /* 以下のコードを実行すると、ラジオボタン選択後吹き出しが出なくなる
     return () => {
       // コンポーネント unmount 時に全破棄
@@ -178,12 +188,47 @@ function Schedule() {
   /**
    * 選択中の種別（kind）に応じてフィルタリングされたイベント一覧
    */
+  const calendarRef = useRef<FullCalendar | null>(null);
+  /**
+   *
+   */
+  const eventFetcher = (info: any, successCallback: (events: any[]) => void) => {
+    const filtered = allEvents.filter((event) => {
+      // 表示期間で絞る（最重要）
+      const eventStart = new Date(event.start);
+      const eventEnd = event.end ? new Date(event.end) : eventStart;
+
+      const inRange = eventStart < info.end && eventEnd > info.start;
+
+      if (!inRange) return false;
+
+      // kind フィルタ
+      if (kindSelected !== 'all' && event.kind !== kindSelected) {
+        return false;
+      }
+
+      return true;
+    });
+
+    successCallback([...holidays, ...filtered]);
+  };
+  /*
+  const filterdEvents = [
+    ...holidays,
+    ...allEvents.filter((event) => {
+      if (kindSelected === 'all') return true;
+      return event.kind === kindSelected;
+    }),
+  ];
+  */
+  /*
   const filterdEvents = allEvents.filter((event) => {
     // 「すべて」が選択されている場合は全件表示
     if (kindSelected === 'all') return true;
     // event.kind が選択中の kind と一致するものだけ表示
     return event.kind === kindSelected;
   });
+  */
 
   // 読み込み中
   if (!allEvents.length) {
@@ -256,7 +301,8 @@ function Schedule() {
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay',
           }}
-          events={filterdEvents}
+          ref={calendarRef}
+          events={eventFetcher}
           editable={true}
           selectable={true}
           // 重要: カレンダーの高さを親要素(div)いっぱいにする
