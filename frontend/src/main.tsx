@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
-import App from './App.tsx';
+import App from './App';
 
 /**
  * アプリケーションのエントリーポイント。
@@ -12,6 +12,8 @@ import App from './App.tsx';
  *
  * このファイル自体は React コンポーネントを定義しない。
  */
+//const root = createRoot(document.getElementById('root')!);
+//root.render(<App />);
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <App />

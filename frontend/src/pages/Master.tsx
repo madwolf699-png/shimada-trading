@@ -10,7 +10,7 @@ export default function Master() {
         <Typography variant="h5" gutterBottom>
           マスタ管理
         </Typography>
-
+        {/*
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={4}>
             <Button fullWidth variant="outlined">
@@ -30,6 +30,7 @@ export default function Master() {
             </Button>
           </Grid>
         </Grid>
+        */}
       </CardContent>
     </Card>
   );

@@ -3,5 +3,7 @@
   "entryPointStrategy": "expand",
   "out": "docs",
   "plugin": ["typedoc-plugin-markdown"],
-  "exclude": ["**/*.test.tsx"]
+  "exclude": ["**/*.test.tsx"],
+  "excludePrivate": false,
+  "excludeProtected": false
 }

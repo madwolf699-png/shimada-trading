@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { Drawer, List, ListItemButton, ListItemText, Collapse, Typography } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { menuData } from './menuData.ts';
+import { menuData } from './menuData';
 import { useNavigate } from 'react-router-dom';
 
 type Props = {
   open: boolean;
   onClose: () => void;
+  onSelect?: () => void;
 };
 
 /**

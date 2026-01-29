@@ -1,3 +1,7 @@
+import { useState } from 'react';
+import Drawer from '@mui/material/Drawer';
+const [open, setOpen] = useState(false);
+
 <Drawer
   anchor="left"
   open={open}

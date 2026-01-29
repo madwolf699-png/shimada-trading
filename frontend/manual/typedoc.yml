@@ -12,11 +12,27 @@ info:
       ```
       - 全ファイルのTypeDocを実施する場合
         ```bash
-        npx typedoc
+        npx typedoc --tsconfig tsconfig.typedoc.json \
+          --entryPointStrategy expand \
+          --excludeExternals \
+          --excludeInternal \
+          --excludePrivate false \
+          --excludeProtected false
         ```
       - 特定のファイルのTypeDocを実施する場合
         ```bash
-        npx typedoc src/pages/[ファイル名]
+        npx typedoc --tsconfig tsconfig.typedoc.json \
+          --entryPointStrategy expand \
+          --excludeExternals \
+          --excludeInternal \
+          src/pages/[ファイル名]
+        もしくは
+        npx typedoc --tsconfig tsconfig.typedoc.json \
+          --entryPointStrategy expand \
+          --excludeExternals \
+          --excludeInternal \
+          src/pages/[ファイル名]
+          --exclude "**/!([ファイル名]).tsx"
         ```
 
     ## 2. 作成されたドキュメントの確認

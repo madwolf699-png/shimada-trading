@@ -89,6 +89,7 @@ const Header = forwardRef<HTMLDivElement, Props>(({ onMenuClick }, ref) => {
       </Toolbar>
 
       {/* ===== 下段（タブ） ===== */}
+      {/*
       {!isMobile && (
         <Tabs
           value={tabValue}
@@ -109,6 +110,7 @@ const Header = forwardRef<HTMLDivElement, Props>(({ onMenuClick }, ref) => {
           <Tab label="マスタ" />
         </Tabs>
       )}
+      */}
     </AppBar>
   );
 });

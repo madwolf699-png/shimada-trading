@@ -1,11 +1,11 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import NotFound from './pages/NotFound.tsx';
-import Home from './pages/Home.tsx';
-import About from './pages/About.tsx';
-import Login from './pages/Login.tsx';
-import Schedule from './pages/Schedule.tsx';
-import Master from './pages/Master.tsx';
-import Layout from './pages/common/Layout.tsx';
+import NotFound from './pages/NotFound';
+import Home from './pages/Home';
+import About from './pages/About';
+import Login from './pages/Login';
+import Schedule from './pages/Schedule';
+import Master from './pages/Master';
+import Layout from './pages/common/Layout';
 /**
  * アプリケーション全体のルーティングを定義する
  * ルートコンポーネント。

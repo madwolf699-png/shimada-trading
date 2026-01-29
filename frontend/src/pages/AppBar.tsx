@@ -1,4 +1,8 @@
+import { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
+import { AppBar, Toolbar, IconButton, Typography } from '@mui/material';
+
+const [open, setOpen] = useState(false);
 
 <AppBar position="fixed">
   <Toolbar>

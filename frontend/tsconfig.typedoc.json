@@ -1,0 +1,35 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+
+    /* ===== 超重要 ===== */
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+
+    /* React を認識させる */
+    "jsx": "react-jsx",
+    "types": ["react", "react-dom"],
+
+    /* JSX / div / h1 が消える問題の解決 */
+    "lib": ["DOM", "DOM.Iterable", "ES2020"],
+
+    /* 型エラーを全部無視するため */
+    "strict": false,
+    "skipLibCheck": true,
+
+    /* React 18 / MUI / router 対策 */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    /* .ts / .tsx import を許可 */
+    "allowImportingTsExtensions": true,
+
+    /* TypeDoc 用に甘く */
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["src/tests/**", "**/*.spec.ts", "**/*.test.ts", "node_modules"]
+}

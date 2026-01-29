@@ -7,8 +7,8 @@ import jaLocale from '@fullcalendar/core/locales/ja';
 import tippy from 'tippy.js';
 import type { Instance } from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
-import type { components } from '../api/types.tsx';
-import { backGroundApi } from '../api/BackGround.tsx';
+import type { components } from '../api/types';
+import { backGroundApi } from '../api/BackGround';
 
 type EventsRequest = components['schemas']['EventsRequest'];
 type EventsResponse = components['schemas']['EventsResponse'];
