@@ -1,0 +1,28 @@
+{
+  "name": "Go Backend Development",
+  //"dockerfile": "../../docker/backend-go/Dockerfile"
+  "dockerComposeFile": ["../../docker-compose.yml"],
+  "service": "backend-go", // どのサービスに入るか
+  // ローカルのソースコードがある場所を基準にする
+  "workspaceFolder": "/backend-go",
+  //"workspaceMount": "source=${localWorkspaceFolder}/..,target=/workspace/shimada-trading,type=bind",
+  "context": ".",
+//  "build": {
+//    "target": "builder" // DockerfileのStage 1(builder)を利用する
+//  },
+  "features": {
+    "ghcr.io/devcontainers/features/go:1": {
+      "version": "latest"
+    }
+  },  // コンテナに接続した直後に実行したいコマンドを指定
+  "postStartCommand": "sh .devcontainer/post-create.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "golang.go", // Go拡張機能
+        "bungyip.vscode-adwv-generate" 
+      ]
+    }
+  },
+  "remoteUser": "root" // builderステージは通常root
+}

@@ -16,6 +16,24 @@ services:
     networks:
       - app-net
 
+  backend-go:
+#    build: ./docker/backend-go
+    build:
+      context: ./backend-go # ソースコードがある場所を指定
+      dockerfile: ../docker/backend-go/Dockerfile # Dockerfileの場所
+#    container_name: backend-go
+    restart: unless-stopped
+    volumes:
+      - ./backend-go:/backend-go
+    # バイナリを実行せず、コンテナを起動し続けるための命令
+    command: sleep infinity
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+    networks:
+      - app-net
+
   frontend:
     build: ./docker/frontend
 #    container_name: frontend

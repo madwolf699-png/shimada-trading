@@ -1,0 +1,56 @@
+# --- Stage 1: Build ---
+# Goのビルド用イメージを指定
+FROM golang:1.24-alpine
+#FROM golang:1.24-alpine AS builder
+
+# devcontainerでの開発に最低限必要なパッケージ
+RUN apk add --no-cache git gcc musl-dev tzdata && \
+    cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
+    echo "Asia/Tokyo" > /etc/timezone
+
+# 作業ディレクトリの作成
+WORKDIR /backend-go
+
+# 依存関係（go.mod, go.sum）を先にコピーしてダウンロード
+# これにより、ソースコード変更時にライブラリの再ダウンロードを防げる（キャッシュの活用）
+#COPY go.mod go.sum* ./
+COPY go.mod ./
+COPY go.sum* ./
+RUN ls -la && go mod download
+#RUN go mod download
+
+# ソースコードをコピー
+COPY . .
+
+# 3. ここでライブラリをダウンロード！
+# まだ go.mod に記載がない場合は、ここで go get することも可能です
+RUN go get github.com/go-sql-driver/mysql && go mod tidy
+
+# 開発時はプロセスを落とさないようにする
+CMD ["sleep", "infinity"]
+
+# アプリケーションのビルド
+# CGO_ENABLED=0 は、静的リンクされたバイナリを作成するために指定
+RUN CGO_ENABLED=0 GOOS=linux go build -o main .
+
+# --- Stage 2: Run ---
+# 実行用の軽量イメージを使用
+FROM alpine:latest
+
+# 1. tzdataをインストール
+# 2. タイムゾーンをアジア/東京に設定
+# Goプログラム内で time.Now() を呼ぶと日本時間になります
+# 3. 不要なキャッシュを削除してイメージを軽量に保つ
+RUN apk --no-cache add tzdata && \
+    cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
+    echo "Asia/Tokyo" > /etc/timezone
+
+# セキュリティのため、ルートユーザー以外で実行することが推奨されますが
+# 今回はシンプルにするため最小構成にしています
+WORKDIR /backend-go
+
+# ビルダーから実行バイナリだけをコピー
+COPY --from=builder /backend-go/main .
+
+# 実行
+CMD ["./main"]
