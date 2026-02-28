@@ -3,3 +3,4 @@ app/tmp
 manual
 backend.code-workspace
 **/*_test.go
+**/*.tar

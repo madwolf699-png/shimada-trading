@@ -10,6 +10,13 @@
 - PHP + Vite(React) 構成
 - ローカル開発環境を簡単に構築可能
 
+  ```bash
+  [repository-name]
+  は
+  shimada-trading
+  に置き換えてください。
+  ```
+
 ## 対象環境
   - Docker: 24.0.7 以上
     - インストールされていない場合は、インストール必要。
@@ -25,13 +32,13 @@
 ## 1. リポジトリ取得
 以下のように開発環境を取得して下さい。
 ```bash
-git clone git@github.com:[yourname]/[リポジトリ名].git
-cd [リポジトリ名]
+git clone git@github.com:[yourname]/[repository-name].git
+cd [repository-name]
  ```
 
 ## 2. ディレクトリ構成
 
-    [リポジトリ名]/
+    [repository-name]/
     ├─ backend/　⇒　VScodeでのソース修正対象
     ├    ├─ .devcontainer/
     ├    ├    └─ devcontainer.json
@@ -102,26 +109,26 @@ cd [リポジトリ名]
 
   ①新規にセットアップする場合
   ```bash
-    cd [リポジトリ名]
+    cd [repository-name]
     docker compose up --build -d
   ```
   ※ネットワーク環境により、およそ数十分程度かかる場合があります。
 
-  ②同じ[リポジトリ名]を更新セットアップする場合
+  ②同じ[repository-name]を更新セットアップする場合
   ```bash
-    cd [リポジトリ名]
+    cd [repository-name]
     docker compose build --no-cache
     docker compose up -d
   ```
 　　※ネットワーク環境により、およそ数十分程度かかる場合があります。
 
   - 以下のdockerイメージが作成されます。
-    - [リポジトリ名]-frontend
-    - [リポジトリ名]-backend
+    - [repository-name]-frontend
+    - [repository-name]-backend
 
   - 以下のdockerコンテナが起動されます。
-    - [リポジトリ名]-frontend
-    - [リポジトリ名]-backend
+    - [repository-name]-frontend
+    - [repository-name]-backend
 
   - 以下にアクセスし画面が正しく表示される事。
     - http://localhost:5173
@@ -136,7 +143,7 @@ cd [リポジトリ名]
   - Dev Containers　⇒　Microsoft
 - コマンドプロンプトもしくは、PowerShellで以下を実行します。
   ```bash
-  cd [リポジトリ名]/frontend
+  cd [repository-name]/frontend
   code frontend.code-workspace
 
   ```
@@ -168,7 +175,7 @@ cd [リポジトリ名]
       ```
     - ターミナルで以下を実行します。（Gitソース管理では必須）
       ```bash
-      git remote set-url origin https://github.com/[yourname]/[リポジトリ名].git
+      git remote set-url origin https://github.com/[yourname]/[repository-name].git
       ```
 
 - 拡張機能で以下のものをインストールする
@@ -181,7 +188,7 @@ cd [リポジトリ名]
 
   - 以下のマニュアルを参照し、開発環境のセットアップを行ってください。
     ```bash
-    [リポジトリ名]/frontend/manual/setup.yml
+    [repository-name]/frontend/manual/setup.yml
     ```
   ※上記マニュアルは OpenAPI SwaggerUI preview で表示してください。（ Visual Studio Codeの右上にアイコンがあるばずです。）
 
@@ -192,7 +199,7 @@ cd [リポジトリ名]
   - Dev Containers | Microsoft
 - コマンドプロンプトもしくは、PowerShellで以下を実行します。
   ```bash
-  cd [リポジトリ名]/backend]
+  cd [repository-name]/backend]
   code backend.code-workspace
   ```
 
@@ -223,7 +230,7 @@ cd [リポジトリ名]
       ```
     - ターミナルで以下を実行します。（Gitソース管理では必須）
       ```bash
-      git remote set-url origin https://github.com/[yourname]/[リポジトリ名].git
+      git remote set-url origin https://github.com/[yourname]/[repository-name].git
       ```
 
 - 拡張機能で以下のものをインストールする
@@ -238,6 +245,6 @@ cd [リポジトリ名]
 
   以下のマニュアルを参照し、開発環境のセットアップを行ってください。
     ```bash
-    [リポジトリ名]/backend/manual/setup.yml
+    [repository-name]/backend/manual/setup.yml
     ```
   ※上記マニュアルは OpenAPI SwaggerUI preview で表示してください。（ Visual Studio Codeの右上にアイコンがあるばずです。）

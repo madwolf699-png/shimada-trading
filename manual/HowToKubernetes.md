@@ -2,12 +2,34 @@
 
 このプロジェクトにKubernetesを導入する手順について記載します。
 
+```bash
+[repository-name]
+は
+shimada-trading
+に置き換えてください。
+```
+
 ## 0. Dockerイメージをビルドし、イメージファイルを作成
 ```bash
-docker build -t [repository-name]-backend:latest -f docker/backend/Dockerfile.prod backend/
-docker build -t [repository-name]-frontend:latest -f docker/frontend/Dockerfile.prod frontend/
+■backend
+cd backend
+docker build --no-cache -t [repository-name]-backend:latest -f ../docker/backend/Dockerfile.prod .
 docker save [repository-name]-backend:latest -o [repository-name]-backend.tar
+
+■backend-go
+cd backend-go/app
+docker build --no-cache -t [repository-name]-backend-go:latest -f ../../docker/backend-go/Dockerfile.prod .
+docker save [repository-name]-backend-go:latest -o [repository-name]-backend-go.tar
+
+■frontend
+cd frontend
+docker build --no-cache -t [repository-name]-frontend:latest -f ../docker/frontend/Dockerfile.prod .
 docker save [repository-name]-frontend:latest -o [repository-name]-frontend.tar
+
+■db
+cd db
+docker build --no-cache -t [repository-name]-db:latest -f ../docker/db/Dockerfile.prod .
+docker save [repository-name]-db:latest -o [repository-name]-db.tar
 ```
 
 ## 1. containerに登録する場合(Linuxn等)
@@ -16,6 +38,7 @@ docker save [repository-name]-frontend:latest -o [repository-name]-frontend.tar
     ```bash
     kubectl apply -f k8s/namespace.yaml
     ```
+
   - backend
     ```bash
     #containerdにイメージを入れる
@@ -35,6 +58,25 @@ docker save [repository-name]-frontend:latest -o [repository-name]-frontend.tar
     curl -v http://backend:8080
     ```
 
+  - backend-go
+    ```bash
+    #containerdにイメージを入れる
+    sudo ctr -n k8s.io images import [repository-name]-backend-go.tar
+    sudo ctr -n k8s.io images ls | grep [repository-name]
+    kubectl delete pod -n [repository-name] --all
+    kubectl apply -f k8s/backend-go/
+
+    #kubectl port-forward svc/backend 8080:80 -n [repository-name]
+    #http://localhost:8080
+
+    kubectl run curl-test \
+    -n [repository-name] \
+    --rm -it \
+    --image=curlimages/curl -- sh
+
+    curl -v http://backend:8081
+    ```
+
   - frontend
     ```bash
     #containerdにイメージを入れる
@@ -50,12 +92,28 @@ docker save [repository-name]-frontend:latest -o [repository-name]-frontend.tar
     curl -v http://backend:8080
     http://localhost:/30080
      ```
+
+  - db
+    ```bash
+    #containerdにイメージを入れる
+    sudo ctr -n k8s.io images import [repository-name]-db.tar
+    sudo ctr -n k8s.io images ls | grep [repository-name]
+    kubectl delete pod -n [repository-name] --all
+    kubectl apply -f k8s/db/
+
+    #kubectl port-forward svc/backend 8080:80 -n [repository-name]
+
+    kubectl exec -it -n [repository-name] deploy/db -- sh
+    curl -v http://backend:3306
+     ```
+
 ## 2. Docker Desktopに登録する場合(Windows等)
 - kubernetesと同じマシンに登録する場合
   - Namespace
     ```bash
     kubectl apply -f k8s/namespace.yaml
     ```
+
   - backend
     ```bash
     docker load -i [repository-name]-backend.tar
@@ -71,6 +129,16 @@ docker save [repository-name]-frontend:latest -o [repository-name]-frontend.tar
     curl -v http://backend:8080
     ```
 
+  - backend-go
+    ```bash
+    docker load -i [repository-name]-backend-go.tar
+    docker images | grep [repository-name]-backend-go
+    kubectl delete pod -n [repository-name] --all
+    kubectl apply -f k8s/backend-go/
+
+    curl -v http://localhost:8080/users
+    ```
+
   - frontend
     ```bash
     docker load -i [repository-name]-frontend.tar
@@ -81,6 +149,17 @@ docker save [repository-name]-frontend:latest -o [repository-name]-frontend.tar
     kubectl exec -it -n [repository-name] deploy/frontend -- sh
     curl -v http://backend:8080
     http://localhost:/30080
+    ```
+
+  - db
+    ```bash
+    docker load -i [repository-name]-db.tar
+    docker images | grep [repository-name]-db
+    kubectl delete pod -n [repository-name] --all
+    kubectl apply -f k8s/db/
+
+    kubectl exec -it -n [repository-name] deploy/db -- sh
+    curl -v http://db:3306
     ```
 
 ## A.1 Raspberry Pi 4 + UbuntuへのKubernetesインストール

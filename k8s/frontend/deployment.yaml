@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
-  namespace: test-project
+  namespace: shimada-trading
 spec:
   replicas: 1
   selector:
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: test-project-frontend:latest
+          image: shimada-trading-frontend:latest
           #imagePullPolicy: IfNotPresent
           imagePullPolicy: Never
           ports:

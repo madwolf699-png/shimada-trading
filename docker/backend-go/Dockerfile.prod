@@ -1,32 +1,41 @@
-# --- Stage 1: Build ---
-FROM golang:1.24-alpine AS builder
-# タイムゾーン等のパッケージをここで取得しておく
-RUN apk add --no-cache tzdata
+# --- Stage 1: Build (コンパイル用) ---
+FROM golang:1.25-alpine AS builder
+
+# ビルドに必要な最小限のパッケージ
+RUN apk add --no-cache git gcc musl-dev
+
+WORKDIR /build
+
+# 1. 依存関係ファイルをコピー (rootからの相対パスを指定)
+# ビルドコンテキストが root なので、backend-go/ を起点にする
+COPY go.mod go.sum* ./
+
+# 依存ライブラリのダウンロード
+RUN go mod download
+
+# ソースコードのコピーとビルド
+COPY . .
+
+# CGOを無効化し、静的バイナリを作成することで実行環境の互換性を高める
+#RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o /app/server ./app/main.go
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o /build/server ./main.go
+
+# --- Stage 2: Runtime (実行用) ---
+# 実行時はOSを含まない、または最小限のイメージ(alpine等)を使用
+FROM alpine:3.20
+
+# タイムゾーンの設定と、HTTPS通信に必要な証明書のインストール
+RUN apk add --no-cache curl tzdata ca-certificates && \
+    cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
+    echo "Asia/Tokyo" > /etc/timezone
 
 WORKDIR /app
-COPY go.mod go.sum ./
-RUN go mod download
-COPY . .
-# 完全に静的なバイナリを作成
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o main .
 
-# --- Stage 2: Run ---
-# alpine または scratch を使用
-FROM alpine:3.19
+# ビルダーから実行バイナリのみをコピー
+COPY --from=builder /build/server .
 
-# セキュリティ：実行専用の一般ユーザーを作成
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+# ポート指定 (K8sのService等と合わせる)
+EXPOSE 8080
 
-# タイムゾーン情報のコピー
-COPY --from=builder /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-COPY --from=builder /etc/timezone /etc/timezone
-
-WORKDIR /home/appuser/
-# ビルドしたバイナリだけをコピー
-COPY --from=builder /app/main .
-
-# ユーザーを切り替え
-USER appuser
-
-# 実行
-CMD ["./main"]
+# アプリケーションの実行
+CMD ["./server"]
