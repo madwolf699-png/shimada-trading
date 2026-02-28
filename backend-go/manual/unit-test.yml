@@ -1,0 +1,36 @@
+openapi: 3.0.3
+info:
+  title: gotestsumによる単体試験
+  version: 1.0.0
+  description: |
+    本ドキュメントはbacktend-goのローカル開発環境で、ソースファイルの単体試験について示しています。
+
+    ## 1. gotestsによる単体試験作成
+    - Visual Studio Codeでターミナルを開き、以下を実行。
+      ```bash
+      cd app/controllers
+      gotests -all -w users.go
+      ````
+
+    ## 2. gotestsumによる単体試験実施
+    - Visual Studio Codeでターミナルを開き、以下を実行。
+      - 特定のファイルの単体試験を実施する場合
+        ```bash
+        gotestsum --watch -- -v ./...
+        gotestsum -- -v ./... && gotestsum --watch -- -v ./...
+        ★これ
+        gotestsum --junitfile ../coverage/report.xml -- -v ./...
+        ```
+
+    ## 3. go testによる単体試験実施
+    - Visual Studio Codeでターミナルを開き、以下を実行。
+      - 特定のファイルの単体試験を実施する場合
+        ```bash
+        ★これ
+        #go test -v ./controllers/users_test.go ./controllers/users.go
+        go test -json -count=1 ./... | go-test-report -o ../coverage/report.html
+        ```
+
+    ## A. 参考URL
+
+paths: {}

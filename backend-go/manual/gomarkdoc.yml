@@ -1,0 +1,16 @@
+openapi: 3.0.3
+info:
+  title: gomarkdocによるドキュメント作成
+  version: 1.0.0
+  description: |
+    本ドキュメントはbackend-goのローカル開発環境で、ソースファイル個々のgomarkdocによるドキュメント作成について示しています。
+
+    ## 1. gomarkdocによるドキュメント作成
+    - Visual Studio Codeでターミナルを開き、以下を実行。
+      ```bash
+      gomarkdoc ./... > ../docs/DOCUMENTATION.md
+      ```
+
+    ## A. 参考URL
+
+paths: {}

@@ -1,0 +1,174 @@
+openapi: 3.0.3
+info:
+  title: Backend API
+  version: 1.0.0
+
+tags:
+  - name: ユーザ情報
+    description: ユーザの登録・取得・更新・削除に関する操作
+
+paths:
+  /users:
+    post:
+      tags:
+        - ユーザ情報
+      summary: ユーザ登録
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsersRequestPost'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponsePost'
+        default:
+          description: 予期せぬエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      tags:
+        - ユーザ情報
+      summary: ユーザ一覧取得
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsersRequestGet'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponseGet'
+        default:
+          description: 予期せぬエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - ユーザ情報
+      summary: ユーザ更新
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsersRequestPut'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponsePut'
+        default:
+          description: 予期せぬエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - ユーザ情報
+      summary: ユーザ削除
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsersRequestDelete'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponseDelete'
+        default:
+          description: 予期せぬエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: "Invalid request parameters"
+
+    # 共通のユーザー情報モデル
+    User:
+      type: object
+      required:
+        - ID
+        - Name
+      properties:
+        ID:
+          type: integer
+        Name:
+          type: string
+
+    UsersRequestPost:
+      type: object
+      required:
+        - Name
+      properties:
+        Name:
+          type: string
+    UsersResponsePost:
+      $ref: '#/components/schemas/User'
+
+    UsersRequestGet:
+      type: object
+
+    UsersResponseGet:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+
+    UsersRequestPut:
+      type: object
+      required:
+        - ID
+        - Name
+      properties:
+        ID:
+          type: integer
+        Name:
+          type: string
+    UsersResponsePut:
+      $ref: '#/components/schemas/User'
+
+    UsersRequestDelete:
+      type: object
+      required:
+        - ID
+      properties:
+        ID:
+          type: integer
+    UsersResponseDelete:
+      $ref: '#/components/schemas/User'

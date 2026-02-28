@@ -1,0 +1,23 @@
+openapi: 3.0.3
+info:
+  title: 開発環境 コーディング規約
+  version: 1.0.0
+  description: |
+    本ドキュメントはbackend-goのローカル開発環境で、ソースファイルにコーディング規約について示しています。
+    ## 1. API仕様書からの型チェック、バリデーションチェック
+    - コード生成（型の自動生成）
+      ```bash
+      cd app
+      go get github.com/go-chi/chi/v5
+      go get github.com/oapi-codegen/nethttp-middleware
+      go mod tidy
+      //oapi-codegen -package main -generate types,server,spec ../manual/api.yml > api.gen.go
+      oapi-codegen -package controllers -generate types,chi-server,spec ../manual/api.yml > controllers/api.gen.go
+      ```
+    - バリデーションの有効化
+      - main.goへの組み込み
+      - controllers/user.goへの組み込み
+
+    ## A. 参考URL
+
+paths: {}
