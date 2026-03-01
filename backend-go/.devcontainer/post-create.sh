@@ -20,5 +20,7 @@ go install gotest.tools/gotestsum@latest
 go install github.com/vakenbolt/go-test-report@latest
 go install github.com/cweill/gotests/gotests@latest
 go get github.com/DATA-DOG/go-sqlmock
+go get gopkg.in/yaml.v3
+go get github.com/xuri/excelize/v2
 
 echo "Done!"
