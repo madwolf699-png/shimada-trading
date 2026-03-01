@@ -13,6 +13,8 @@ go install github.com/ramya-rao-a/go-outline@latest
 go install golang.org/x/tools/gopls@latest
 go install github.com/air-verse/air@latest
 go install github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest
+#go install github.com/getkin/kin-openapi/openapi3
+#go install github.com/oapi-codegen/echo-middleware
 go get github.com/getkin/kin-openapi/openapi3
 go get github.com/oapi-codegen/echo-middleware
 go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
@@ -22,5 +24,8 @@ go install github.com/cweill/gotests/gotests@latest
 go get github.com/DATA-DOG/go-sqlmock
 go get gopkg.in/yaml.v3
 go get github.com/xuri/excelize/v2
+#go install github.com/DATA-DOG/go-sqlmock
+#go install gopkg.in/yaml.v3
+#go install github.com/xuri/excelize/v2
 
 echo "Done!"
