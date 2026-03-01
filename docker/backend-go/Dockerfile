@@ -1,10 +1,11 @@
 # --- Stage 1: Build ---
 # Goのビルド用イメージを指定
 FROM golang:1.25-alpine
+#FROM golang:1.25-bookworm
 #FROM golang:1.25-alpine AS builder
 
 # devcontainerでの開発に最低限必要なパッケージ
-RUN apk add --no-cache curl git gcc musl-dev tzdata && \
+RUN apk add --no-cache bash curl git gcc musl-dev tzdata && \
     cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
     echo "Asia/Tokyo" > /etc/timezone
 
