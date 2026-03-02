@@ -17,9 +17,10 @@ type Database struct {
 }
 
 type Table struct {
-	Name    string   `yaml:"name"`
-	Comment string   `yaml:"comment"`
-	Columns []Column `yaml:"columns"`
+	Name     string                   `yaml:"name"`
+	Comment  string                   `yaml:"comment"`
+	Columns  []Column                 `yaml:"columns"`
+	SeedData []map[string]interface{} `yaml:"seed_data"` // ★追加
 }
 
 type Column struct {
@@ -170,6 +171,44 @@ func generateMarkdown(db Database) {
 		}
 
 		sb.WriteString("\n")
+
+		// =========================
+		// ★ seed_data 出力処理
+		// =========================
+		if len(table.SeedData) > 0 {
+
+			sb.WriteString("- 初期データ\n\n")
+
+			// ヘッダー（カラム名）
+			sb.WriteString("| ")
+			for _, col := range table.Columns {
+				sb.WriteString(col.Name + " | ")
+			}
+			sb.WriteString("\n|")
+
+			for range table.Columns {
+				sb.WriteString("----|")
+			}
+			sb.WriteString("\n")
+
+			// データ行
+			for _, row := range table.SeedData {
+
+				sb.WriteString("| ")
+				for _, col := range table.Columns {
+
+					val := "-"
+					if v, ok := row[col.Name]; ok {
+						val = fmt.Sprintf("%v", v)
+					}
+
+					sb.WriteString(val + " | ")
+				}
+				sb.WriteString("\n")
+			}
+
+			sb.WriteString("\n")
+		}
 	}
 
 	os.WriteFile("../../docs/schema.md", []byte(sb.String()), 0644)

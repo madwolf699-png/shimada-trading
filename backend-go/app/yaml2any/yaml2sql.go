@@ -17,10 +17,11 @@ type Database struct {
 }
 
 type Table struct {
-	Name    string   `yaml:"name"`
-	Comment string   `yaml:"comment"`
-	Columns []Column `yaml:"columns"`
-	Indexes []Index  `yaml:"indexes"`
+	Name     string                   `yaml:"name"`
+	Comment  string                   `yaml:"comment"`
+	Columns  []Column                 `yaml:"columns"`
+	Indexes  []Index                  `yaml:"indexes"`
+	SeedData []map[string]interface{} `yaml:"seed_data"` // ★追加
 }
 
 type Column struct {
@@ -163,6 +164,52 @@ func generateSQL(db Database) {
 		}
 
 		sb.WriteString(";\n\n")
+
+		// ==========================
+		// ★ seed_data INSERT生成
+		// ==========================
+		if len(table.SeedData) > 0 {
+
+			sb.WriteString(fmt.Sprintf("-- seed data for %s\n", table.Name))
+
+			// カラム名一覧（AUTO_INCREMENT以外も含める）
+			var colNames []string
+			for _, col := range table.Columns {
+				colNames = append(colNames, "`"+col.Name+"`")
+			}
+
+			sb.WriteString(fmt.Sprintf(
+				"INSERT INTO `%s` (%s) VALUES\n",
+				table.Name,
+				strings.Join(colNames, ", "),
+			))
+
+			for i, row := range table.SeedData {
+
+				sb.WriteString("  (")
+
+				var values []string
+				for _, col := range table.Columns {
+
+					val := "NULL"
+
+					if v, ok := row[col.Name]; ok {
+						val = formatValue(v)
+					}
+
+					values = append(values, val)
+				}
+
+				sb.WriteString(strings.Join(values, ", "))
+				sb.WriteString(")")
+
+				if i < len(table.SeedData)-1 {
+					sb.WriteString(",\n")
+				} else {
+					sb.WriteString(";\n\n")
+				}
+			}
+		}
 	}
 
 	sb.WriteString("SET FOREIGN_KEY_CHECKS = 1;\n")
@@ -190,4 +237,23 @@ func formatDefault(def interface{}) string {
 	default:
 		return fmt.Sprintf("%v", v)
 	}
+}
+
+func formatValue(val interface{}) string {
+	switch v := val.(type) {
+	case string:
+		return "'" + escapeSQL(v) + "'"
+	case bool:
+		if v {
+			return "true"
+		}
+		return "false"
+	default:
+		return fmt.Sprintf("%v", v)
+	}
+}
+
+func escapeSQL(s string) string {
+	s = strings.ReplaceAll(s, "'", "''")
+	return s
 }

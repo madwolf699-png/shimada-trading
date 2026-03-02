@@ -18,10 +18,11 @@ type Database struct {
 }
 
 type Table struct {
-	Name    string   `yaml:"name"`
-	Comment string   `yaml:"comment"`
-	Columns []Column `yaml:"columns"`
-	Indexes []Index  `yaml:"indexes"`
+	Name     string                   `yaml:"name"`
+	Comment  string                   `yaml:"comment"`
+	Columns  []Column                 `yaml:"columns"`
+	Indexes  []Index                  `yaml:"indexes"`
+	SeedData []map[string]interface{} `yaml:"seed_data"` // ★追加
 }
 
 type Column struct {
@@ -190,6 +191,67 @@ func generateExcel(db Database) {
 			if idx.Unique {
 				f.SetCellValue(sheet, fmt.Sprintf("C%d", r), "○")
 			}
+		}
+
+		// ===== 初期データ一覧 =====
+		if len(table.SeedData) > 0 {
+
+			seedStart := indexStart + 3 + len(table.Indexes)
+
+			f.SetCellValue(sheet, fmt.Sprintf("A%d", seedStart), "初期データ一覧")
+
+			// ヘッダー行
+			headerRow := seedStart + 1
+
+			for colIndex, col := range table.Columns {
+				cell, _ := excelize.CoordinatesToCellName(colIndex+1, headerRow)
+				f.SetCellValue(sheet, cell, col.Name)
+			}
+
+			// ヘッダースタイル適用
+			endHeaderCell, _ := excelize.CoordinatesToCellName(len(table.Columns), headerRow)
+			f.SetCellStyle(sheet,
+				fmt.Sprintf("A%d", headerRow),
+				endHeaderCell,
+				headerStyle,
+			)
+
+			// データ行出力
+			for rowIndex, row := range table.SeedData {
+
+				dataRow := headerRow + 1 + rowIndex
+
+				for colIndex, col := range table.Columns {
+
+					cell, _ := excelize.CoordinatesToCellName(colIndex+1, dataRow)
+
+					if val, ok := row[col.Name]; ok {
+						f.SetCellValue(sheet, cell, val)
+					} else {
+						f.SetCellValue(sheet, cell, "")
+					}
+				}
+			}
+
+			// 枠線スタイル（簡易）
+			dataEndRow := headerRow + len(table.SeedData)
+
+			borderStyle, _ := f.NewStyle(&excelize.Style{
+				Border: []excelize.Border{
+					{Type: "left", Style: 1},
+					{Type: "right", Style: 1},
+					{Type: "top", Style: 1},
+					{Type: "bottom", Style: 1},
+				},
+			})
+
+			endDataCell, _ := excelize.CoordinatesToCellName(len(table.Columns), dataEndRow)
+
+			f.SetCellStyle(sheet,
+				fmt.Sprintf("A%d", headerRow),
+				endDataCell,
+				borderStyle,
+			)
 		}
 	}
 
