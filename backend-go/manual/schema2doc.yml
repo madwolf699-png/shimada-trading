@@ -1,0 +1,35 @@
+openapi: 3.0.3
+info:
+  title: DB仕様書のドキュメント作成
+  version: 1.0.0
+  description: |
+    本ドキュメントはbackend-goのローカル開発環境で、DB仕様書のドキュメント作成について示しています。
+
+    ## 1. gomarkdocによるドキュメント作成
+    - Visual Studio Codeでターミナルを開き、以下を実行。
+      ```bash
+      ■OpenAPI仕様書への変換
+      cd app/yaml2any
+      go run yaml2openapi.go
+
+      ■YAMLからer、mdへの変換
+      cd app/yaml2any
+      go run yaml2er.go
+
+      ■ER図
+      ※以下はWindowsのコマンドラインにて。
+      cd docs
+      java -jar plantuml-1.2026.2.jar -tsvg schema_er.puml
+
+      ■SQLスクリプト作成
+      cd app/yaml2any
+      go run yaml2sql.go
+
+      ■DB仕様書をExcelへ出力
+      cd app/yaml2any
+      go run yaml2excel.go
+      ```
+
+    ## A. 参考URL
+
+paths: {}
