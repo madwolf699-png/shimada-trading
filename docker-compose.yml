@@ -17,10 +17,10 @@ services:
       - app-net
 
   backend-go:
-#    build: ./docker/backend-go
-    build:
-      context: ./backend-go # ソースコードがある場所を指定
-      #dockerfile: ../docker/backend-go/Dockerfile # Dockerfileの場所
+    build: ./docker/backend-go
+#    build:
+#      context: ./backend-go # ソースコードがある場所を指定
+#      dockerfile: ../docker/backend-go/Dockerfile # Dockerfileの場所
 #    container_name: backend-go
     restart: unless-stopped
     volumes:

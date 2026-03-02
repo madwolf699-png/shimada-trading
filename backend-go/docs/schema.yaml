@@ -3,8 +3,8 @@ database:
   version: 1.0
 
 tables:
-  - name: groups_master
-    comment: グループマスタ
+  - name: account_types_master
+    comment: 口座種別マスタ
     columns:
       - name: id
         type: bigint
@@ -13,12 +13,16 @@ tables:
         auto_increment: true
         comment: ID
       - name: name
-        type: varchar(100)
-        not_null: true
-        comment: グループ名
+        type: varchar(10)
+        comment: 種別名
+    seed_data:
+      - id : 1
+        name: '普通預金'
+      - id : 2
+        name: '当座預金'
 
-  - name: users_master
-    comment: ユーザマスタ
+  - name: approval_flows_master
+    comment: 承認フローマスタ
     columns:
       - name: id
         type: bigint
@@ -26,41 +30,267 @@ tables:
         not_null: true
         auto_increment: true
         comment: ID
-      - name: group_id
-        type: bigint
-        not_null: true
-        comment: グループID
-        fk:
-          table: groups_master
-          column: id
-      - name: name
-        type: varchar(100)
-        not_null: true
-        comment: ユーザ名
-      - name: email
-        type: varchar(100)
-        not_null: true
-        comment: メールアドレス
       - name: department_id
         type: bigint
-        not_null: true
-        comment: 所属ID
+        comment: 部門ID⇒部門マスターとのリレーション？★
         fk:
           table: departments_master
           column: id
+      - name: name_1
+        type: varchar(100)
+        not_null: true
+        comment: 承認者１
+      - name: name_2
+        type: varchar(100)
+        not_null: true
+        comment: 承認者２
+      - name: name_3
+        type: varchar(100)
+        not_null: true
+        comment: 承認者３
+      - name: name_4
+        type: varchar(100)
+        not_null: true
+        comment: 承認者４
+      - name: name_5
+        type: varchar(100)
+        not_null: true
+        comment: 承認者５
       - name: valid_flag
         type: boolean
         not_null: true
         default: true
         comment: 有効無効
-      - name: lonin_id
+
+  - name: billing_days_master
+    comment: 請求日マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(10)
+        not_null: true
+        comment: 請求日名
+      - name: day
+        type: integer
+        not_null: true
+        comment: 請求日
+    seed_data:
+      - id : 1
+        name: '31日'
+        day: 31
+
+  - name: billing_months_master
+    comment: 請求月マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(10)
+        not_null: true
+        comment: 請求月
+    seed_data:
+      - id : 1
+        name: '当月'
+
+  - name: billings_master
+    comment: 請求マスタ⇒1-17-11の請求項目との連携は未★
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: shipping_id
+        type: bigint
+        not_null: true
+        comment: 荷主
+        fk:
+          table: shippings_master
+          column: id
+      - name: closing_date_id
+        type: bigint
+        not_null: true
+        comment: 締日
+        fk:
+          table: closing_dates_master
+          column: id
+      - name: billing_date_kind
+        type: bigint
+        not_null: true
+        comment: 請求月
+        fk:
+          table: billing_months_master
+          column: id
+      - name: billing_date_id
+        type: bigint
+        not_null: true
+        comment: 請求日
+        fk:
+          table: billing_days_master
+          column: id
+      - name: billing_department_id
+        type: bigint
+        not_null: true
+        comment: 請求先部門
+        fk:
+          table: departments_master
+          column: id
+      - name: transfer_financial_institution
         type: varchar(100)
         not_null: true
-        comment: ログインID
-      - name: lonin_passwd
+        comment: 振込先金融機関名称
+      - name: account_type
+        type: bigint
+        not_null: true
+        comment: 口座種別
+        fk:
+          table: account_types_master
+          column: id
+      - name: account_number
+        type: varchar(30)
+        not_null: true
+        comment: 口座番号
+      - name: account_name
         type: varchar(100)
         not_null: true
-        comment: ログイン・パスワード
+        comment: 口座名義
+
+      - name: consumption_tax_show_id
+        type: bigint
+        not_null: true
+        comment: 消費税
+        fk:
+          table: consumption_tax_shows_master
+          column: id
+      - name: rounding_id
+        type: bigint
+        not_null: true
+        comment: 端数処理(円未満)
+        fk:
+          table: roundings_master
+          column: id
+      - name: fare_aggregation_id
+        type: bigint
+        not_null: true
+        comment: 運賃集約
+        fk:
+          table: fare_aggregations_master
+          column: id
+
+  - name: closing_dates_master
+    comment: 締日マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(10)
+        not_null: true
+        comment: 締日名
+      - name: day
+        type: integer
+        not_null: true
+        comment: 締日
+    seed_data:
+      - id : 1
+        name: '31日'
+        day: 31
+
+  - name: collaborations_master
+    comment: 連携種別マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 連携種別名
+    seed_data:
+      - id : 1
+        name: 'JSON'
+
+  - name: consumption_tax_shows_master
+    comment: 消費税表示形式マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(10)
+        comment: 表示形式名
+    seed_data:
+      - id : 1
+        name: '内税'
+      - id : 2
+        name: '外税'
+
+
+  - name: consumption_tax_rates_master
+    comment: 消費税率保守マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: code
+        type: varchar(100)
+        not_null: true
+        comment: コード⇒このコードはどこで使用される？★
+      - name: tax_rate
+        type: decimal(5,2)
+        not_null: true
+        comment: 税率
+      - name: effective_start_date
+        type: date
+        not_null: true
+        comment: 有効開始日
+      - name: remarks
+        type: varchar(100)
+        not_null: false
+        comment: 備考
+    seed_data:
+      - id: 1
+        code: '01'
+        tax_rate: 3.00
+        effective_start_date: '1989-04-01' 
+        remarks: 3%
+      - id: 2
+        code: '02'
+        tax_rate: 5.00
+        effective_start_date: '1907-04-01' 
+        remarks: 5%
+      - id: 3
+        code: '03'
+        tax_rate: 8.00
+        effective_start_date: '2014-04-01' 
+        remarks: 8%
+      - id: 4
+        code: '04'
+        tax_rate: 10.00
+        effective_start_date: '2019-10-01' 
+        remarks: 10%
 
   - name: customers_master
     comment: 利用者マスタ
@@ -124,8 +354,8 @@ tables:
         not_null: false
         comment: 住所２
 
-  - name: stores_master
-    comment: 店舗マスタ
+  - name: delivery_companys_master
+    comment: 配送業者マスタ
     columns:
       - name: id
         type: bigint
@@ -136,55 +366,28 @@ tables:
       - name: code
         type: varchar(100)
         not_null: true
-        comment: 店舗コード
+        comment: 配送業者コード⇒何桁？★
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 配送業者名称
       - name: abbreviation
         type: varchar(100)
-        not_null: true
-        comment: 店舗略称
-      - name: name_1
-        type: varchar(100)
         not_null: false
-        comment: 店舗名称１
-      - name: name_2
-        type: varchar(100)
-        not_null: false
-        comment: 店舗名称２
-      - name: post_code
-        type: varchar(8)
+        comment: 配送業者略称
+      - name: kubun
+        type: boolean
         not_null: true
-        comment: 郵便番号
-      - name: prefecture
-        type: varchar(20)
-        not_null: true
-        comment: 県
-      - name: country
-        type: varchar(100)
-        not_null: true
-        comment: 市
-      - name: address_1
-        type: varchar(100)
-        not_null: true
-        comment: 住所１
-      - name: address_2
-        type: varchar(100)
-        not_null: false
-        comment: 住所２
+        default: true
+        comment: 自車・備車区分⇒マスタが必要？★
       - name: tel
-        type: varchar(20)
-        not_null: true
+        type: varchar(100)
+        not_null: false
         comment: 電話番号
-      - name: fax
-        type: varchar(20)
-        not_null: true
-        comment: FAX番号
-      - name: designated_delivery_company
+      - name: package_tracking_url
         type: varchar(100)
         not_null: false
-        comment: 指定配送業者名
-      - name: email
-        type: varchar(100)
-        not_null: false
-        comment: 店舗メールアドレス
+        comment: 荷物追跡用URL
 
   - name: departments_master
     comment: 部門マスタ
@@ -195,14 +398,17 @@ tables:
         not_null: true
         auto_increment: true
         comment: ID
-      - name: shipper_code
-        type: varchar(100)
+      - name: shipping_id
+        type: bigint
         not_null: true
         comment: 荷主コード
+        fk:
+          table: shippings_master
+          column: id
       - name: code
         type: varchar(100)
         not_null: true
-        comment: 部門コード
+        comment: 部門コード⇒何桁？★
       - name: name
         type: varchar(100)
         not_null: true
@@ -222,19 +428,612 @@ tables:
       - name: district
         type: varchar(100)
         not_null: true
-        comment: 地区
+        comment: 地区⇒マスタが必要？★
       - name: order_selection_category
         type: varchar(100)
         not_null: true
-        comment: オーダー選択区分
+        comment: オーダー選択区分⇒マスタが必要？★
       - name: channels
         type: varchar(100)
         not_null: true
-        comment: 取扱チャンネル
+        comment: 取扱チャンネル⇒マスタが必要？★
       - name: expense_claims
         type: varchar(100)
         not_null: true
-        comment: 経費請求
+        comment: 経費請求⇒マスタが必要？★
+
+  - name: entry_and_exit_fees_master
+    comment: 入出庫料金マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: code
+        type: varchar(100)
+        not_null: true
+        comment: コード⇒何桁？★
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 名称
+      - name: cost
+        type: bigint
+        not_null: true
+        comment: 費用
+      - name: remarks
+        type: varchar(100)
+        not_null: false
+        comment: 備考
+
+  - name: external_collaborations_master
+    comment: 外部連携マスタ⇒1-17-22の連携項目との連携が未★
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 外部連携名
+      - name: kind_id
+        type: integer
+        not_null: true
+        comment: 種別
+        fk:
+          table: kinds_master
+          column: id
+      - name: collaboration_id
+        type: integer
+        not_null: true
+        comment: 連携種別
+        fk:
+          table: collaborations_master
+          column: id
+      - name: valid_flag
+        type: boolean
+        not_null: true
+        default: true
+        comment: 有効無効
+      - name: form
+        type: text
+        not_null: false
+        comment: フォーム
+
+  - name: fare_aggregations_master
+    comment: 運賃集約マスタ
+    columns:
+    - name: id
+      type: bigint
+      pk: true
+      not_null: true
+      auto_increment: true
+      comment: ID
+    - name: name
+      type: varchar(100)
+      not_null: true
+      comment: 集約名
+    seed_data:
+      - id: 1
+        name: '入庫出庫別'
+
+  - name: groups_master
+    comment: グループマスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: グループ名
+
+  - name: items_master
+    comment: アイテムマスタ⇒QRコードについて未？★
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      
+      - name: photo_file_name
+        type: varchar(255)
+        not_null: true
+        comment: 写真ファイル名
+      - name: photo_file_data
+        type: mediumblob
+        not_null: true
+        comment: 写真ファイル本体（画像・Excel）
+      - name: photo_mime_type
+        type: varchar(100)
+        not_null: true
+        comment: 写真MIMEタイプ
+
+      - name: doc_file_name
+        type: varchar(255)
+        not_null: true
+        comment: 仕様書ファイル名
+      - name: doc_file_data
+        type: mediumblob
+        not_null: true
+        comment: 仕様書ファイル本体（画像・Excel）
+      - name: doc_mime_type
+        type: varchar(100)
+        not_null: true
+        comment: 仕様書MIMEタイプ
+
+      - name: public_division
+        type: integer
+        comment: 公開区分⇒マスタが必要？★
+      - name: department_id
+        type: bigint
+        comment: 部門コード
+        fk:
+          table: departments_master
+          column: id
+      - name: product_code
+        type: varchar(100)
+        comment: 商品コード
+      - name: product_name
+        type: varchar(100)
+        comment: 商品名所
+      - name: product_abbreviation
+        type: varchar(100)
+        comment: 商品略称
+      - name: management_method
+        type: integer
+        comment: 管理方法⇒マスタが必要？★
+      - name: shipping_order_unit_quantity
+        type: integer
+        comment: 出荷(受注)単位数量
+      - name: packing_unit_quantity
+        type: integer
+        comment: 梱包単位(数量)
+      - name: product_division_for_others
+        type: integer
+        comment: 他者扱い商品区分⇒マスタが必要？★
+      - name: supplier_Code
+        type: integer
+        comment: 仕入先コード⇒マスタが必要？★
+      - name: made_to_order_production_category
+        type: integer
+        comment: 受注生産区分⇒マスタが必要？★
+      - name: production_lead_time_in_days
+        type: integer
+        comment: 生産リードタイム日数
+      - name: solid_management_category
+        type: integer
+        comment: 固体管理区分⇒マスタが必要？★
+      - name: jan_code
+        type: varchar(100)
+        comment: JANコード
+      - name: product_division 
+        type: integer
+        comment: 商品区分⇒マスタが必要？★
+      - name: quantity
+        type: integer
+        comment: 入り数
+
+      - name: delivery_by_courier_available
+        type: integer
+        comment: 宅配便発送可否⇒マスタが必要？★
+      - name: inventory_quantity_management_category
+        type: integer
+        comment: 在庫数量管理区分⇒マスタが必要？★
+      - name: shipping_form
+        type: integer
+        comment: 出荷形態⇒マスタが必要？★
+      - name: location
+        type: varchar(100)
+        comment: ロケーション
+      - name: outgoing_shelf
+        type: integer
+        comment: 出庫棚⇒マスタが必要？★
+      - name: inventory_shelf
+        type: integer
+        comment: 在庫棚⇒マスタが必要？★
+      - name: rental_item_categories
+        type: integer
+        comment: レンタル品区分⇒マスタが必要？★
+      - name: product_classification
+        type: integer
+        comment: 商品分類⇒マスタが必要？★
+      - name: product_category
+        type: integer
+        comment: 商品カテゴリ⇒マスタが必要？★
+      - name: order_number
+        type: integer
+        comment: 順序番号
+      - name: set_product_category
+        type: integer
+        comment: セット品区分⇒マスタが必要？★
+      - name: fare_category
+        type: integer
+        comment: 運賃区分⇒マスタが必要？★
+      - name: inventory_unit_price
+        type: integer
+        comment: 在庫単価
+      - name: currency_Unit
+        type: integer
+        comment: 通過単位⇒マスタが必要？★
+      - name: packing_fee
+        type: decimal(10,2)
+        comment: 梱包料金
+      - name: material_cost
+        type: decimal(10,2)
+        comment: 資材料金
+      - name: receipt_amount_calculation_division
+        type: integer
+        comment: 入庫量計算区分⇒マスタが必要？★
+      - name: issue_amount_calculation_division
+        type: integer
+        comment: 出庫量計算区分⇒マスタが必要？★
+      - name: unit
+        type: integer
+        comment: 単位⇒マスタが必要？★
+      - name: automatic_allocation_stop_inventory_quantity
+        type: decimal(10,2)
+        comment: 自動引当停止在庫数量
+      - name: automatic_allocation_availability_category
+        type: integer
+        comment: 自動引当可否区分⇒マスタが必要？★
+
+      - name: order_reception
+        type: integer
+        not_null: true
+        comment: オーダー受付⇒マスタが必要？★
+      - name: regular_consumables_category
+        type: integer
+        not_null: true
+        comment: 通常消耗品区分⇒マスタが必要？★
+      - name: rare_item_division
+        type: integer
+        not_null: true
+        comment: 希少品区分⇒マスタが必要？★
+      - name: expected_arrival_date
+        type: date
+        not_null: false
+        comment: 入庫予定日
+      - name: first_stock_date
+        type: date
+        not_null: false
+        comment: 初回入庫日
+
+      - name: comment_1
+        type: varchar(100)
+        not_null: false
+        comment: コメント１
+      - name: comment_2
+        type: varchar(100)
+        not_null: false
+        comment: コメント２
+      - name: comment_3
+        type: varchar(100)
+        not_null: false
+        comment: コメント３
+      - name: comment_4
+        type: varchar(100)
+        not_null: false
+        comment: コメント４
+      - name: comment_5
+        type: varchar(100)
+        not_null: false
+        comment: コメント５
+      - name: remarks
+        type: varchar(100)
+        not_null: false
+        comment: 備考
+
+      - name: actual_weight
+        type: decimal(10,2)
+        comment: 実重量
+      - name: volumetric_weight
+        type: decimal(10,2)
+        comment: 容積重量
+      - name: logistics_volume
+        type: decimal(10,2)
+        comment: 物流量
+      - name: volume_amount
+        type: decimal(10,2)
+        comment: 容積重
+
+      - name: size_w
+        type: decimal(10,2)
+        comment: 寸法　W
+      - name: size_d
+        type: decimal(10,2)
+        comment: 寸法　D
+      - name: size_h
+        type: decimal(10,2)
+        comment: 寸法　H
+
+      - name: actual_size_weight
+        type: decimal(10,2)
+        comment: 実寸　重量
+      - name: actual_size_volume
+        type: decimal(10,2)
+        comment: 実寸　容積
+
+      - name: packing_style_vertical
+        type: decimal(10,2)
+        comment: 荷姿　縦
+      - name: packing_style_width
+        type: decimal(10,2)
+        comment: 荷姿　横
+      - name: packing_style_height
+        type: decimal(10,2)
+        comment: 荷姿　高
+      - name: packing_style_weight
+        type: decimal(10,2)
+        comment: 荷姿　重量
+      - name: packing_style_volume
+        type: decimal(10,2)
+        comment: 荷姿　容積
+
+
+
+  - name: kinds_master
+    comment: 種別マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 種別名
+    seed_data:
+      - id : 1
+        name: '請求書'
+
+  - name: locations_master
+    comment: ロケーションマスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: code
+        type: varchar(100)
+        not_null: true
+        comment: ロケーションコード⇒何桁？★
+      - name: warehouse
+        type: varchar(100)
+        not_null: true
+        comment: 倉庫
+
+  - name: mobile_devices_master
+    comment: モバイル端末マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 端末名称
+      - name: mac_address
+        type: varchar(100)
+        not_null: true
+        comment: MACアドレス
+      - name: valid_flag
+        type: boolean
+        not_null: true
+        default: true
+        comment: 有効無効
+      - name: remarks
+        type: varchar(100)
+        not_null: false
+        comment: 備考
+
+  - name: order_deadlines_master
+    comment: 受注締切時刻保守マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 時刻種別名
+      - name: time
+        type: varchar(10)
+        not_null: true
+        comment: 時刻
+      - name: valid_flag
+        type: boolean
+        not_null: true
+        default: true
+        comment: 有効無効
+    seed_data:
+      - id : 1
+        name: '受注締切時刻'
+        time: '12:00'
+        valid_flag: true
+      - id : 2
+        name: 'オーダーエントリ中の猶予時刻（受注締切時刻の5分後）'
+        time: '12:05'
+        valid_flag: true
+      - id : 3
+        name: '緊急出庫基準時刻'
+        time: '48:00'
+        valid_flag: true
+
+  - name: packing_sizes_master
+    comment: 梱包サイズマスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: code
+        type: varchar(100)
+        not_null: true
+        comment: コード⇒何桁？★
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 名称
+      - name: remarks
+        type: varchar(100)
+        not_null: false
+        comment: 備考
+      - name: order
+        type: int
+        not_null: true
+        comment: 順序
+
+  - name: product_categories_master
+    comment: 商品カテゴリマスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: code
+        type: varchar(100)
+        not_null: true
+        comment: コード⇒何桁？★
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 名称
+      - name: remarks
+        type: varchar(100)
+        not_null: false
+        comment: 備考
+      - name: order
+        type: int
+        not_null: true
+        comment: 順序
+
+  - name: product_units_master
+    comment: 商品単位マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: code
+        type: varchar(100)
+        not_null: true
+        comment: コード⇒何桁？★
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 名称
+      - name: remarks
+        type: varchar(100)
+        not_null: false
+        comment: 備考
+      - name: order
+        type: integer
+        not_null: true
+        comment: 順序
+
+  - name: return_and_repair_units_master
+    comment: 返却入庫補修単位マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: code
+        type: varchar(100)
+        not_null: true
+        comment: コード⇒何桁？★
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 名称
+      - name: remarks
+        type: varchar(100)
+        not_null: false
+        comment: 備考
+      - name: order
+        type: int
+        not_null: true
+        comment: 順序
+
+  - name: roundings_master
+    comment: 端数処理マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(10)
+        not_null: true
+        comment: 処理名
+    seed_data:
+      - id : 1
+        name: '切上げ'
+      - id : 2
+        name: '四捨五入'
+      - id : 3
+        name: '切捨て'
+
+  - name: services_useds_master
+    comment: 利用サービスマスタ⇒1-17-21の定義が未★
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: サービス名
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 請求日
+      - name: amount
+        type: bigint
+        not_null: true
+        comment: 金額
+      - name: activation_time
+        type: timestamp
+        not_null: true
+        comment: 有効化日時
+      - name: invalidation_time
+        type: timestamp
+        not_null: true
+        comment: 無効化日時
 
   - name: set_items_master
     comment: セットアイテムマスタ
@@ -245,11 +1044,11 @@ tables:
         not_null: true
         auto_increment: true
         comment: ID
-      - name: public_classification
+      - name: public_division
         type: boolen
         not_null: true
         default: true
-        comment: 公開区分
+        comment: 公開区分⇒マスタが必要？★
       - name: department_id
         type: bigint
         not_null: true
@@ -299,10 +1098,17 @@ tables:
         not_null: true
         auto_increment: true
         comment: ID
+      - name: set_item_id
+        type: bigint
+        not_null: true
+        comment: アイテムID
+        fk:
+          table: set_items_master
+          column: id
       - name: product_unit_id
         type: bigint
         not_null: true
-        comment: 商品ID
+        comment: 商品ID⇒何桁？★
         fk:
           table: product_units_master
           column: id
@@ -311,8 +1117,37 @@ tables:
         not_null: true
         comment: 数量
 
-  - name: delivery_companys_master
-    comment: 配送業者マスタ
+
+  - name: shipping_fees_master
+    comment: 配送料金マスタ⇒1-17-9の内容が不明？★
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+
+  - name: shippings_master
+    comment: 荷主マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name : code
+        type: varchar(10)
+        not_null: true
+        comment: 荷主コード⇒何桁？★別マスタが必要？
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 荷主名
+
+  - name: stores_master
+    comment: 店舗マスタ
     columns:
       - name: id
         type: bigint
@@ -323,176 +1158,55 @@ tables:
       - name: code
         type: varchar(100)
         not_null: true
-        comment: 配送業者コード
-      - name: name
-        type: varchar(100)
-        not_null: true
-        comment: 配送業者名称
+        comment: 店舗コード⇒何桁？★
       - name: abbreviation
         type: varchar(100)
-        not_null: false
-        comment: 配送業者略称
-      - name: kubun
-        type: boolean
         not_null: true
-        default: true
-        comment: 自車・備車区分
+        comment: 店舗略称
+      - name: name_1
+        type: varchar(100)
+        not_null: false
+        comment: 店舗名称１
+      - name: name_2
+        type: varchar(100)
+        not_null: false
+        comment: 店舗名称２
+      - name: post_code
+        type: varchar(8)
+        not_null: true
+        comment: 郵便番号
+      - name: prefecture
+        type: varchar(20)
+        not_null: true
+        comment: 県
+      - name: country
+        type: varchar(100)
+        not_null: true
+        comment: 市
+      - name: address_1
+        type: varchar(100)
+        not_null: true
+        comment: 住所１
+      - name: address_2
+        type: varchar(100)
+        not_null: false
+        comment: 住所２
       - name: tel
-        type: varchar(100)
-        not_null: false
+        type: varchar(20)
+        not_null: true
         comment: 電話番号
-      - name: package_tracking_url
+      - name: fax
+        type: varchar(20)
+        not_null: true
+        comment: FAX番号
+      - name: designated_delivery_company
         type: varchar(100)
         not_null: false
-        comment: 荷物追跡用URL
-
-  - name: locations_master
-    comment: ロケーションマスタ
-    columns:
-      - name: id
-        type: bigint
-        pk: true
-        not_null: true
-        auto_increment: true
-        comment: ID
-      - name: code
-        type: varchar(100)
-        not_null: true
-        comment: ロケーションコード
-      - name: warehouse
-        type: varchar(100)
-        not_null: true
-        comment: 倉庫
-
-  - name: entry_and_exit_fees_master
-    comment: 入出庫料金マスタ
-    columns:
-      - name: id
-        type: bigint
-        pk: true
-        not_null: true
-        auto_increment: true
-        comment: ID
-      - name: code
-        type: varchar(100)
-        not_null: true
-        comment: コード
-      - name: name
-        type: varchar(100)
-        not_null: true
-        comment: 名称
-      - name: cost
-        type: bigint
-        not_null: true
-        comment: 費用
-      - name: remarks
+        comment: 指定配送業者名
+      - name: email
         type: varchar(100)
         not_null: false
-        comment: 備考
-
-  - name: packing_sizes_master
-    comment: 梱包サイズマスタ
-    columns:
-      - name: id
-        type: bigint
-        pk: true
-        not_null: true
-        auto_increment: true
-        comment: ID
-      - name: code
-        type: varchar(100)
-        not_null: true
-        comment: コード
-      - name: name
-        type: varchar(100)
-        not_null: true
-        comment: 名称
-      - name: remarks
-        type: varchar(100)
-        not_null: false
-        comment: 備考
-      - name: order
-        type: int
-        not_null: true
-        comment: 順序
-
-  - name: return_and_repair_units_master
-    comment: 返却入庫補修単位マスタ
-    columns:
-      - name: id
-        type: bigint
-        pk: true
-        not_null: true
-        auto_increment: true
-        comment: ID
-      - name: code
-        type: varchar(100)
-        not_null: true
-        comment: コード
-      - name: name
-        type: varchar(100)
-        not_null: true
-        comment: 名称
-      - name: remarks
-        type: varchar(100)
-        not_null: false
-        comment: 備考
-      - name: order
-        type: int
-        not_null: true
-        comment: 順序
-
-  - name: product_categories_master
-    comment: 商品カテゴリマスタ
-    columns:
-      - name: id
-        type: bigint
-        pk: true
-        not_null: true
-        auto_increment: true
-        comment: ID
-      - name: code
-        type: varchar(100)
-        not_null: true
-        comment: コード
-      - name: name
-        type: varchar(100)
-        not_null: true
-        comment: 名称
-      - name: remarks
-        type: varchar(100)
-        not_null: false
-        comment: 備考
-      - name: order
-        type: int
-        not_null: true
-        comment: 順序
-
-  - name: product_units_master
-    comment: 商品単位マスタ
-    columns:
-      - name: id
-        type: bigint
-        pk: true
-        not_null: true
-        auto_increment: true
-        comment: ID
-      - name: code
-        type: varchar(100)
-        not_null: true
-        comment: コード
-      - name: name
-        type: varchar(100)
-        not_null: true
-        comment: 名称
-      - name: remarks
-        type: varchar(100)
-        not_null: false
-        comment: 備考
-      - name: order
-        type: integer
-        not_null: true
-        comment: 順序
+        comment: 店舗メールアドレス
 
   - name: system_mail_settings_master
     comment: システムメール設定マスタ
@@ -506,13 +1220,13 @@ tables:
       - name: code
         type: varchar(100)
         not_null: true
-        comment: コード
+        comment: コード⇒何桁？★
       - name: title
         type: varchar(100)
         not_null: true
         comment: タイトル
       - name: body
-        type: varchar(100)
+        type: text
         not_null: true
         comment: 本文
       - name: email_from
@@ -520,7 +1234,7 @@ tables:
         not_null: true
         comment: 送信元メールアドレス
       - name: remarks
-        type: varchar(100)
+        type: text
         not_null: false
         comment: 備考
       - name: valid_flag
@@ -529,8 +1243,8 @@ tables:
         default: true
         comment: 有効無効
 
-  - name: consumption_tax_rates_master
-    comment: 消費税率保守マスタ
+  - name: users_master
+    comment: ユーザマスタ⇒1-17-3について検討未？★
     columns:
       - name: id
         type: bigint
@@ -538,87 +1252,38 @@ tables:
         not_null: true
         auto_increment: true
         comment: ID
-      - name: code
-        type: varchar(100)
-        not_null: true
-        comment: コード
-      - name: tax_rate
-        type: decimal(5,2)
-        not_null: true
-        comment: 税率
-      - name: effective_start_Date
-        type: date
-        not_null: true
-        comment: 有効開始日
-      - name: remarks
-        type: varchar(100)
-        not_null: false
-        comment: 備考
-
-  - name: mobile_devices_master
-    comment: モバイル端末マスタ
-    columns:
-      - name: id
+      - name: group_id
         type: bigint
-        pk: true
         not_null: true
-        auto_increment: true
-        comment: ID
+        comment: グループID
+        fk:
+          table: groups_master
+          column: id
+      - name: user_id
+        type: varchar(100)
+        not_null: true
+        comment: ユーザID
       - name: name
         type: varchar(100)
         not_null: true
-        comment: 端末名称
-      - name: mac_address
+        comment: ユーザ名
+      - name: email
         type: varchar(100)
         not_null: true
-        comment: MACアドレス
-      - name: valid_flag
-        type: boolean
-        not_null: true
-        default: true
-        comment: 有効無効
-      - name: remarks
-        type: varchar(100)
-        not_null: false
-        comment: 備考
-
-  - name: approval_flows_master
-    comment: 承認フローマスタ
-    columns:
-      - name: id
-        type: bigint
-        pk: true
-        not_null: true
-        auto_increment: true
-        comment: ID
+        comment: メールアドレス
       - name: department_id
         type: bigint
-        comment: 部門ID
+        not_null: true
+        comment: 所属ID
         fk:
           table: departments_master
           column: id
-      - name: name_1
-        type: varchar(100)
-        not_null: true
-        comment: 承認者１
-      - name: name_2
-        type: varchar(100)
-        not_null: true
-        comment: 承認者２
-      - name: name_3
-        type: varchar(100)
-        not_null: true
-        comment: 承認者３
-      - name: name_4
-        type: varchar(100)
-        not_null: true
-        comment: 承認者４
-      - name: name_5
-        type: varchar(100)
-        not_null: true
-        comment: 承認者５
       - name: valid_flag
         type: boolean
         not_null: true
         default: true
         comment: 有効無効
+      - name: one_time_passwd
+        type: varchar(100)
+        not_null: true
+        comment: ワンタイムパスワード
