@@ -13,13 +13,253 @@ tables:
         auto_increment: true
         comment: ID
       - name: name
-        type: varchar(10)
+        type: varchar(100)
         comment: 種別名
     seed_data:
       - id : 1
         name: '普通預金'
       - id : 2
         name: '当座預金'
+
+  - name: billing_days_master
+    comment: 請求日マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 請求日名
+      - name: day
+        type: integer
+        not_null: true
+        comment: 請求日
+    seed_data:
+      - id : 1
+        name: '31日'
+        day: 31
+
+  - name: billing_months_master
+    comment: 請求月マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 請求月
+    seed_data:
+      - id : 1
+        name: '当月'
+
+  - name: closing_dates_master
+    comment: 締日マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 締日名
+      - name: day
+        type: integer
+        not_null: true
+        comment: 締日
+    seed_data:
+      - id : 1
+        name: '31日'
+        day: 31
+
+  - name: collaborations_master
+    comment: 連携種別マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 連携種別名
+    seed_data:
+      - id : 1
+        name: 'JSON'
+
+  - name: consumption_tax_shows_master
+    comment: 消費税表示形式マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(100)
+        comment: 表示形式名
+    seed_data:
+      - id : 1
+        name: '内税'
+      - id : 2
+        name: '外税'
+
+  - name: fare_aggregations_master
+    comment: 運賃集約マスタ
+    columns:
+    - name: id
+      type: bigint
+      pk: true
+      not_null: true
+      auto_increment: true
+      comment: ID
+    - name: name
+      type: varchar(100)
+      not_null: true
+      comment: 集約名
+    seed_data:
+      - id: 1
+        name: '入庫出庫別'
+
+  - name: kinds_master
+    comment: 種別マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 種別名
+    seed_data:
+      - id : 1
+        name: '請求書'
+
+  - name: locations_master
+    comment: ロケーションマスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: code
+        type: varchar(100)
+        not_null: true
+        comment: ロケーションコード⇒何桁？★
+      - name: warehouse
+        type: varchar(100)
+        not_null: true
+        comment: 倉庫
+
+  - name: roundings_master
+    comment: 端数処理マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 処理名
+    seed_data:
+      - id : 1
+        name: '切上げ'
+      - id : 2
+        name: '四捨五入'
+      - id : 3
+        name: '切捨て'
+
+  - name: shippings_master
+    comment: 荷主マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name : code
+        type: varchar(100)
+        not_null: true
+        comment: 荷主コード⇒何桁？★別マスタが必要？
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 荷主名
+
+  - name: departments_master
+    comment: 部門マスタ
+    columns:
+      - name: id
+        type: bigint
+        pk: true
+        not_null: true
+        auto_increment: true
+        comment: ID
+      - name: shipping_id
+        type: bigint
+        not_null: true
+        comment: 荷主コード
+        fk:
+          table: shippings_master
+          column: id
+      - name: code
+        type: varchar(100)
+        not_null: true
+        comment: 部門コード⇒何桁？★
+      - name: name
+        type: varchar(100)
+        not_null: true
+        comment: 部門名称
+      - name: charge_name
+        type: varchar(100)
+        not_null: true
+        comment: 責任者名
+      - name: email
+        type: varchar(100)
+        not_null: true
+        comment: メールアドレス
+      - name: warehouse_code
+        type: varchar(100)
+        not_null: true
+        comment: 倉庫コード
+      - name: district
+        type: varchar(100)
+        not_null: true
+        comment: 地区⇒マスタが必要？★
+      - name: order_selection_category
+        type: varchar(100)
+        not_null: true
+        comment: オーダー選択区分⇒マスタが必要？★
+      - name: channels
+        type: varchar(100)
+        not_null: true
+        comment: 取扱チャンネル⇒マスタが必要？★
+      - name: expense_claims
+        type: varchar(100)
+        not_null: true
+        comment: 経費請求⇒マスタが必要？★
 
   - name: approval_flows_master
     comment: 承認フローマスタ
@@ -61,45 +301,6 @@ tables:
         not_null: true
         default: true
         comment: 有効無効
-
-  - name: billing_days_master
-    comment: 請求日マスタ
-    columns:
-      - name: id
-        type: bigint
-        pk: true
-        not_null: true
-        auto_increment: true
-        comment: ID
-      - name: name
-        type: varchar(10)
-        not_null: true
-        comment: 請求日名
-      - name: day
-        type: integer
-        not_null: true
-        comment: 請求日
-    seed_data:
-      - id : 1
-        name: '31日'
-        day: 31
-
-  - name: billing_months_master
-    comment: 請求月マスタ
-    columns:
-      - name: id
-        type: bigint
-        pk: true
-        not_null: true
-        auto_increment: true
-        comment: ID
-      - name: name
-        type: varchar(10)
-        not_null: true
-        comment: 請求月
-    seed_data:
-      - id : 1
-        name: '当月'
 
   - name: billings_master
     comment: 請求マスタ⇒1-17-11の請求項目との連携は未★
@@ -186,64 +387,6 @@ tables:
         fk:
           table: fare_aggregations_master
           column: id
-
-  - name: closing_dates_master
-    comment: 締日マスタ
-    columns:
-      - name: id
-        type: bigint
-        pk: true
-        not_null: true
-        auto_increment: true
-        comment: ID
-      - name: name
-        type: varchar(10)
-        not_null: true
-        comment: 締日名
-      - name: day
-        type: integer
-        not_null: true
-        comment: 締日
-    seed_data:
-      - id : 1
-        name: '31日'
-        day: 31
-
-  - name: collaborations_master
-    comment: 連携種別マスタ
-    columns:
-      - name: id
-        type: bigint
-        pk: true
-        not_null: true
-        auto_increment: true
-        comment: ID
-      - name: name
-        type: varchar(100)
-        not_null: true
-        comment: 連携種別名
-    seed_data:
-      - id : 1
-        name: 'JSON'
-
-  - name: consumption_tax_shows_master
-    comment: 消費税表示形式マスタ
-    columns:
-      - name: id
-        type: bigint
-        pk: true
-        not_null: true
-        auto_increment: true
-        comment: ID
-      - name: name
-        type: varchar(10)
-        comment: 表示形式名
-    seed_data:
-      - id : 1
-        name: '内税'
-      - id : 2
-        name: '外税'
-
 
   - name: consumption_tax_rates_master
     comment: 消費税率保守マスタ
@@ -389,59 +532,6 @@ tables:
         not_null: false
         comment: 荷物追跡用URL
 
-  - name: departments_master
-    comment: 部門マスタ
-    columns:
-      - name: id
-        type: bigint
-        pk: true
-        not_null: true
-        auto_increment: true
-        comment: ID
-      - name: shipping_id
-        type: bigint
-        not_null: true
-        comment: 荷主コード
-        fk:
-          table: shippings_master
-          column: id
-      - name: code
-        type: varchar(100)
-        not_null: true
-        comment: 部門コード⇒何桁？★
-      - name: name
-        type: varchar(100)
-        not_null: true
-        comment: 部門名称
-      - name: charge_name
-        type: varchar(100)
-        not_null: true
-        comment: 責任者名
-      - name: email
-        type: varchar(100)
-        not_null: true
-        comment: メールアドレス
-      - name: warehouse_code
-        type: varchar(100)
-        not_null: true
-        comment: 倉庫コード
-      - name: district
-        type: varchar(100)
-        not_null: true
-        comment: 地区⇒マスタが必要？★
-      - name: order_selection_category
-        type: varchar(100)
-        not_null: true
-        comment: オーダー選択区分⇒マスタが必要？★
-      - name: channels
-        type: varchar(100)
-        not_null: true
-        comment: 取扱チャンネル⇒マスタが必要？★
-      - name: expense_claims
-        type: varchar(100)
-        not_null: true
-        comment: 経費請求⇒マスタが必要？★
-
   - name: entry_and_exit_fees_master
     comment: 入出庫料金マスタ
     columns:
@@ -482,14 +572,14 @@ tables:
         not_null: true
         comment: 外部連携名
       - name: kind_id
-        type: integer
+        type: bigint
         not_null: true
         comment: 種別
         fk:
           table: kinds_master
           column: id
       - name: collaboration_id
-        type: integer
+        type: bigint
         not_null: true
         comment: 連携種別
         fk:
@@ -504,23 +594,6 @@ tables:
         type: text
         not_null: false
         comment: フォーム
-
-  - name: fare_aggregations_master
-    comment: 運賃集約マスタ
-    columns:
-    - name: id
-      type: bigint
-      pk: true
-      not_null: true
-      auto_increment: true
-      comment: ID
-    - name: name
-      type: varchar(100)
-      not_null: true
-      comment: 集約名
-    seed_data:
-      - id: 1
-        name: '入庫出庫別'
 
   - name: groups_master
     comment: グループマスタ
@@ -545,7 +618,7 @@ tables:
         not_null: true
         auto_increment: true
         comment: ID
-      
+
       - name: photo_file_name
         type: varchar(255)
         not_null: true
@@ -617,7 +690,7 @@ tables:
       - name: jan_code
         type: varchar(100)
         comment: JANコード
-      - name: product_division 
+      - name: product_division
         type: integer
         comment: 商品区分⇒マスタが必要？★
       - name: quantity
@@ -780,43 +853,6 @@ tables:
         type: decimal(10,2)
         comment: 荷姿　容積
 
-
-
-  - name: kinds_master
-    comment: 種別マスタ
-    columns:
-      - name: id
-        type: bigint
-        pk: true
-        not_null: true
-        auto_increment: true
-        comment: ID
-      - name: name
-        type: varchar(100)
-        not_null: true
-        comment: 種別名
-    seed_data:
-      - id : 1
-        name: '請求書'
-
-  - name: locations_master
-    comment: ロケーションマスタ
-    columns:
-      - name: id
-        type: bigint
-        pk: true
-        not_null: true
-        auto_increment: true
-        comment: ID
-      - name: code
-        type: varchar(100)
-        not_null: true
-        comment: ロケーションコード⇒何桁？★
-      - name: warehouse
-        type: varchar(100)
-        not_null: true
-        comment: 倉庫
-
   - name: mobile_devices_master
     comment: モバイル端末マスタ
     columns:
@@ -854,11 +890,11 @@ tables:
         auto_increment: true
         comment: ID
       - name: name
-        type: varchar(100)
+        type: varchar(200)
         not_null: true
         comment: 時刻種別名
       - name: time
-        type: varchar(10)
+        type: varchar(100)
         not_null: true
         comment: 時刻
       - name: valid_flag
@@ -984,27 +1020,6 @@ tables:
         not_null: true
         comment: 順序
 
-  - name: roundings_master
-    comment: 端数処理マスタ
-    columns:
-      - name: id
-        type: bigint
-        pk: true
-        not_null: true
-        auto_increment: true
-        comment: ID
-      - name: name
-        type: varchar(10)
-        not_null: true
-        comment: 処理名
-    seed_data:
-      - id : 1
-        name: '切上げ'
-      - id : 2
-        name: '四捨五入'
-      - id : 3
-        name: '切捨て'
-
   - name: services_useds_master
     comment: 利用サービスマスタ⇒1-17-21の定義が未★
     columns:
@@ -1018,8 +1033,8 @@ tables:
         type: varchar(100)
         not_null: true
         comment: サービス名
-      - name: name
-        type: varchar(100)
+      - name: billing_date
+        type: date
         not_null: true
         comment: 請求日
       - name: amount
@@ -1045,7 +1060,7 @@ tables:
         auto_increment: true
         comment: ID
       - name: public_division
-        type: boolen
+        type: boolean
         not_null: true
         default: true
         comment: 公開区分⇒マスタが必要？★
@@ -1127,24 +1142,6 @@ tables:
         not_null: true
         auto_increment: true
         comment: ID
-
-  - name: shippings_master
-    comment: 荷主マスタ
-    columns:
-      - name: id
-        type: bigint
-        pk: true
-        not_null: true
-        auto_increment: true
-        comment: ID
-      - name : code
-        type: varchar(10)
-        not_null: true
-        comment: 荷主コード⇒何桁？★別マスタが必要？
-      - name: name
-        type: varchar(100)
-        not_null: true
-        comment: 荷主名
 
   - name: stores_master
     comment: 店舗マスタ
