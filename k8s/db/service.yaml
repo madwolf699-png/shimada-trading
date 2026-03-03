@@ -1,0 +1,15 @@
+# k8s/frontend/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  namespace: shimada-trading
+spec:
+  selector:
+    app: db
+  ports:
+    - name: http
+      port: 3306
+      targetPort: 3306
+  type: ClusterIP
+

@@ -1,0 +1,27 @@
+# k8s/backend/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-go
+  namespace: shimada-trading
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-go
+  template:
+    metadata:
+      labels:
+        app: backend-go
+    spec:
+      containers:
+        - name: backend-go
+          image: shimada-trading-backend-go:latest
+          #imagePullPolicy: IfNotPresent
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: backend-go-config
+

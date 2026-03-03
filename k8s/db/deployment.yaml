@@ -1,0 +1,35 @@
+# k8s/frontend/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+  namespace: shimada-trading
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+        - name: db
+          image: shimada-trading-db:latest
+          #imagePullPolicy: IfNotPresent
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3306
+          #以下ブロックを削除
+          #readinessProbe:
+          #  tcpSocket:
+          #    port: 3306
+          #  initialDelaySeconds: 30
+          #  periodSeconds: 10
+          #livenessProbe:
+          #  tcpSocket:
+          #    port: 3306
+          #  initialDelaySeconds: 60
+          #  periodSeconds: 20
+
