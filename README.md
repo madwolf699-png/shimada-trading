@@ -57,11 +57,47 @@ cd [repository-name]
     ├    ├─ backend.code-workspace
     ├    ├─ index.php
     ├    └─ 各種設定ファイル
+    ├─ backend-go/　⇒　VScodeでのソース修正対象
+    ├    ├─ .devcontainer/
+    ├    ├    └─ devcontainer.json
+    ├    ├─ app/
+    ├    ├─ coverage/
+    ├    ├─ docs/
+    ├    ├─ manual/
+    ├    ├    ├─ api.yml
+    ├    ├    ├─ coding-rule.yml
+    ├    ├    ├─ gomarkdoc.yml
+    ├    ├    ├─ shema2doc.yml
+    ├    ├    ├─ setup.yml
+    ├    ├    └─ unit-test.yml
+    ├    ├─ backend.code-workspace
+    ├    └─ 各種設定ファイル
+    ├─ db/
+    ├    ├─ initdb/
+    ├    ├    └─ schema.sql
+    ├    ├─ my.cnf
+    ├    └─ 各種設定ファイル
     ├─ docker/
     ├    ├─ backend/
-    ├    ├    └─ Dockerfile
+    ├    ├    |─ composer.json
+    ├    ├    |─ composer.lock
+    ├    ├    |─ Dockerfile
+    ├    ├    └─ Dockerfile.prod
+    ├    ├─ backend-go/
+    ├    ├    |─ Dockerfile
+    ├    ├    |─ Dockerfile.prod
+    ├    ├    |─ go.mod
+    ├    ├    └─ main.go
+    ├    ├─ db/
+    ├    ├    |─ initdb/
+    ├    ├    |    └─ schema.sql
+    ├    ├    |─ Dockerfile
+    ├    ├    |─ Dockerfile.prod
+    ├    ├    └─ my.cnf
     ├    └─ frontend/
-    ├         └─ Dockerfile
+    ├    ├    |─ Dockerfile
+    ├    ├    |─ Dockerfile.prod
+    ├    ├    └─ nginx.go
     ├─ frontend/　⇒　VScodeでのソース修正対象
     ├    ├─ .devcontainer/
     ├    ├    └─ devcontainer.json
@@ -85,6 +121,13 @@ cd [repository-name]
     ├─ k8s/
     ├    ├─ backend/
     ├    ├    ├─ configmap.yaml
+    ├    ├    ├─ deployment.yaml
+    ├    ├    └─ service.yaml
+    ├    ├─ backend-go/
+    ├    ├    ├─ configmap.yaml
+    ├    ├    ├─ deployment.yaml
+    ├    ├    └─ service.yaml
+    ├    ├─ db/
     ├    ├    ├─ deployment.yaml
     ├    ├    └─ service.yaml
     ├    └─ frontend/
@@ -145,7 +188,7 @@ cd [repository-name]
   ```bash
   cd [repository-name]/frontend
   code frontend.code-workspace
-
+  npm install @rollup/rollup-win32-x64-msvc --save-dev
   ```
 
   ①「このフォルダ内のファイルの作成者を信頼しますか？」が表示された場合、
